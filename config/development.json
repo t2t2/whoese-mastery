@@ -1,0 +1,3 @@
+{
+	"debug": "*,-engine*,-express:router:*,-socket.io*"
+}
