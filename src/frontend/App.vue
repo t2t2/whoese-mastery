@@ -1,5 +1,5 @@
 <template>
-	<div class="wrapper">
+	<div class="layout__wrapper">
 		<header class="header">
 			<div class="container">	
 				<div class="header-brand">
@@ -19,11 +19,13 @@
 			</div>
 		</header>
 		
-		<router-view></router-view>
+		<div class="layout__content">
+			<router-view></router-view>
+		</div>
 		
 		<footer class="footer">
 			<div class="container">
-				<div class="content has-text-centered">
+				<div class="content">
 					<p><span class="tag is-danger">TODO: FILL THIS</span> Footer and legal stuff</p>
 				</div>
 			</div>

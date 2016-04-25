@@ -1,6 +1,7 @@
 // General
 $primary: material-color('orange', '400');
 $family-sans-serif: 'Roboto', sans-serif;
+$family-headings: 'Lobster', cursive;
 
 // Breakpoints
 $tablet: 641px;
@@ -17,7 +18,17 @@ $text: material-color('grey', '100');
 $link: material-color('orange', '50');
 $link-hover: #ffffff;
 
-@import '~bulma/bulma';
+//@import '~bulma/bulma';
+//*
+@import '~bulma/sass/utilities/utilities';
+@import '~bulma/sass/base/generic';
+@import '~bulma/sass/base/classes';
+@import '~bulma/sass/layout/header';
+@import '~bulma/sass/layout/footer';
+@import '~bulma/sass/elements/title';
+@import '~bulma/sass/elements/other';
+//*/
+
 
 // Overwrites
 html {

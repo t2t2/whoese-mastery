@@ -1,9 +1,10 @@
 @import '~sass-material-colors/sass/sass-material-colors';
 @import 'bulma';
 
-@import 'layout/wrapper';
+@import 'layout';
 
+@import 'elements/button';
+@import 'elements/icons';
 @import 'elements/title';
 
-@import 'components/header';
-@import 'components/footer';
+@import 'components/home';

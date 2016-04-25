@@ -1,0 +1,38 @@
+$button-primary-color: material-color('blue-grey', '500');
+
+.button {
+	@include unselectable;
+	background-color: material-color('blue-grey', '500');
+	border-color: rgba(0, 0, 0, 0.1);
+	border-style: solid;
+	border-width: 3px 3px 5px;
+	border-radius: 0 0 5px 5px;
+	color: material-color('blue-grey', '50');
+	
+	transition: background 0.2s;
+	
+	&:hover {
+		background-color: material-color('blue-grey', '600');
+	}
+	
+	&:active {
+		border-bottom-width: 1px;
+		border-top-width: 7px;
+	}
+	
+	&--main {
+		background-color: material-color('orange', '400');
+		color: material-color('orange', '50');
+		font-family: $family-headings;
+		font-size: 2rem;
+		font-weight: bold;
+		line-height: 1.5;
+		margin: 0.5rem 0;
+		width: 100%;
+		
+		&:hover {
+			background-color: material-color('orange', '500');
+			
+		}
+	}
+}

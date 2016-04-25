@@ -1,3 +1,11 @@
 .title, .subtitle {
-	font-family: 'Lobster', cursive;
+	font-family: $family-headings;
+}
+
+.title {
+	color: material-color('orange', '400');
+}
+
+.subtitle {
+	color: material-color('orange', '500');
 }
