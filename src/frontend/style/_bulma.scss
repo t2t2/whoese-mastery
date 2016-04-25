@@ -1,0 +1,26 @@
+// General
+$primary: material-color('orange', '400');
+$family-sans-serif: 'Roboto', sans-serif;
+
+// Breakpoints
+$tablet: 641px;
+
+// Colors
+$background: material-color('blue-grey', '800');
+$body-background: material-color('blue-grey', '800');
+$border: material-color('blue-grey', '600');
+
+// Text
+$text: material-color('grey', '100');
+
+// Links
+$link: material-color('orange', '50');
+$link-hover: #ffffff;
+
+@import '~bulma/bulma';
+
+// Overwrites
+html {
+	overflow-y: auto;
+}
+

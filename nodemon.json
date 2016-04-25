@@ -1,4 +1,7 @@
 {
 	"watch": ["config/*.*", "src/**/*.*", ".babelrc"],
-	"ignore": ["src/frontend/**/*.*", "src/public/*.*"]
+	"ignore": ["src/frontend/**/*.*", "src/public/**/*.*", "src/views/**/*.*"],
+	"events": {
+		"restart": "xo --ext .js,.vue"
+	}
 }

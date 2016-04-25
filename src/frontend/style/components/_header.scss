@@ -1,0 +1,45 @@
+.header {
+	background: none;
+	border-bottom: 1px solid $border;
+	
+	.subtitle {
+		color: $primary;
+	}
+}
+
+.header-brand {
+	@extend .header-left;
+	@include tablet {
+		flex: 0 0 auto;
+		margin-right: 0.5rem;
+	}
+}
+
+.header-menu {
+	@include mobile {
+		.header-item {
+			transition: background-color 0.1s;
+			
+			&:hover {
+				background-color: material-color('blue-grey', '900');
+			}
+			&:active {
+				background-color: material-color('blue-grey', '500');
+			}
+		}
+	}
+}
+
+.header-toggle {
+	height: 40px;
+	transition: background-color 0.1s;
+	width: 40px;
+}
+.hamburger {
+	&:hover {
+		background-color: material-color('blue-grey', '900');
+	}
+	&:active {
+		background-color: material-color('blue-grey', '500');
+	}
+}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Whose Mastery Is It Anyway?</title>
+	
+	{% if not dev %}
+	{# Let webpack take the wheel when in dev mode #}
+	<link rel="stylesheet" href="{{ 'stylesheets/app.css' | asset }}" />
+	{% endif %}
+	<link href="https://fonts.googleapis.com/css?family=Material+Icons|Lobster|Roboto:400,300" rel="stylesheet" />
+</head>
+<body>
+	<div id="app">
+		<p>Loading core...</p>
+		<noscript>
+			<p>Please enable javascript!</p>
+		</noscript>
+	</div>
+	
+	<script src="{{ 'assets/main.js' | asset }}"></script>
+</body>
+</html>

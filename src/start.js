@@ -1,5 +1,5 @@
 // Ensure config is loaded first to make sure debug gets configured
-import config from './config'
+import './config'
 
 import makeServer from './server'
 
