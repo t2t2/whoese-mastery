@@ -32,4 +32,9 @@ const router = new VueRouter({
 
 router.map(routes)
 
-router.start(App, '#app')
+router.start(App, '#app', () => {
+	if (process.env.NODE_ENV !== 'production') {
+		global.router = router
+		global.app = router.app
+	}
+})

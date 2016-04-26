@@ -8,8 +8,8 @@
 					</div>
 				</div>
 				<div class="header-left header-menu" :class="{'is-active': showMenu}">
-					<a class="header-item" v-link="{name: 'home'}">Home</a>
-					<a class="header-item" v-link="{name: 'about'}">About</a>
+					<a class="header-item" v-link="{name: 'home', exact: true, activeClass: 'is-active'}">Home</a>
+					<a class="header-item" v-link="{name: 'about', activeClass: 'is-active'}">About</a>
 				</div>
 				<div class="header-toggle" @click="toggleMenu">
 					<span></span>
@@ -20,13 +20,14 @@
 		</header>
 		
 		<div class="layout__content">
-			<router-view></router-view>
+			<router-view transition="scale-up" transition-mode="out-in" class="fast" v-ref:page>
+			</router-view>
 		</div>
 		
 		<footer class="footer">
 			<div class="container">
 				<div class="content">
-					<p><span class="tag is-danger">TODO: FILL THIS</span> Footer and legal stuff</p>
+					<p>Whose Mastery Is It Anyway? isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.</p>
 				</div>
 			</div>
 		</footer>

@@ -12,6 +12,11 @@
 	flex: 1;
 	flex-direction: column;
 	padding: 1rem;
+	position: relative;
+
+	.layout__page {
+		@include vue-mui-slide(up, $fade: true);
+	}
 }
 
 .layout__centered-wrapper {

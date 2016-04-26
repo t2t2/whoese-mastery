@@ -3,7 +3,7 @@
 		<div class="layout__centered home">
 			<div class="home__head">
 				<h2 class="title is-1">Whose Mastery Is It Anyway?</h2>
-				<p>A game of knowing who of your friends plays the meanest Rengar.</p>
+				<p v-text="tagline"></p>
 			</div>
 			<div class="home__actions">
 				<div class="home__action">
@@ -35,10 +35,19 @@
 </template>
 
 <script>
+	import sample from 'lodash/sample'
+
+	const taglines = [
+		'A game of knowing who of your friends plays the meanest Rengar.',
+		'A game of figuring out why your friend has 100k mastery points on Swain.',
+		'A game of knowing which team comps you should just ff@20.'
+	]
 
 	export default {
 		data() {
-			return {}
+			return {
+				tagline: sample(taglines)
+			}
 		}
 	}
 </script>

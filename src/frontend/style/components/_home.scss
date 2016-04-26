@@ -35,16 +35,13 @@
 	
 	
 	&__disclaimer {
+		align-items: center;
 		color: material-color('grey', '300');
 		display: flex;
 		font-size: 0.8rem;
 		justify-content: center;
 		margin-top: 2rem;
 		text-align: center;
-		
-		& > .material-icons {
-			vertical-align: middle;
-		}
 	}
 	
 	&__players_info {
