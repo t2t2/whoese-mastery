@@ -16,11 +16,26 @@
 					<span></span>
 					<span></span>
 				</div>
+				<div class="header-right">
+					<div class="username header-item" v-if="connection.user">
+						<div class="username__name">the third eagle of the apocalypse</div>
+						<div class="username__region">EUW</div>
+					</div>
+				</div>
 			</div>
 		</header>
 		
+		<div class="connection fast" v-if="!connection.connected" transition="slide-up-fade">
+			<p v-text="connection.reason"></p>
+		</div>
+		
 		<div class="layout__content">
-			<router-view transition="scale-up" transition-mode="out-in" class="fast" v-ref:page>
+			<router-view
+				transition="scale-up"
+				transition-mode="out-in"
+				class="fast"
+				v-ref:page
+				:connection="connection">
 			</router-view>
 		</div>
 		
@@ -35,8 +50,10 @@
 </template>
 
 <script>
+	import connectionMixin from './mixins/connection'
 
 	export default {
+		mixins: [connectionMixin],
 		data() {
 			return {
 				// Toggle menu (on mobile)

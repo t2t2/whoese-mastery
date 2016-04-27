@@ -36,6 +36,8 @@
 
 <script>
 	import sample from 'lodash/sample'
+	
+	import pageMixin from '../mixins/page'
 
 	const taglines = [
 		'A game of knowing who of your friends plays the meanest Rengar.',
@@ -48,6 +50,7 @@
 			return {
 				tagline: sample(taglines)
 			}
-		}
+		},
+		mixins: [pageMixin]
 	}
 </script>

@@ -1,8 +1,11 @@
 // Based on https://github.com/vuejs-templates/webpack/blob/master/template/build/dev-server.js
-import path from 'path'
 import express from 'express'
 import proxyMiddleware from 'http-proxy-middleware'
 import webpack from 'webpack'
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware'
+import WebpackNotifier from 'webpack-notifier'
+
 import webpackConfig from '../webpack.config.babel'
 
 let config = webpackConfig({
@@ -21,29 +24,24 @@ config.plugins = (config.plugins || []).concat([
 	new webpack.optimize.OccurrenceOrderPlugin(),
 	new webpack.HotModuleReplacementPlugin(),
 	new webpack.NoErrorsPlugin(),
-	
-	new require('webpack-notifier')
+	// Neaties
+	new WebpackNotifier()
 ])
 
 const app = express()
 const compiler = webpack(config)
 
-const devMiddleware = require('webpack-dev-middleware')(compiler, {
+app.use(webpackDevMiddleware(compiler, {
 	publicPath: config.output.publicPath,
 	stats: {
 		colors: true,
 		chunks: false
 	}
-})
-
-const hotMiddleware = require('webpack-hot-middleware')(compiler)
-
-app.use(devMiddleware)
-app.use(hotMiddleware)
+}))
+app.use(webpackHotMiddleware(compiler))
 app.use(proxyMiddleware('/', {
 	target: 'http://localhost:8000',
 	ws: true
 }))
-
 
 app.listen(8080)

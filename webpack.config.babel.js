@@ -1,6 +1,7 @@
 import path from 'path'
-import webpack from 'webpack'
+
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
+// import webpack from 'webpack'
 
 export default function ({
 	prod = false
@@ -35,6 +36,11 @@ export default function ({
 					test: /\.scss$/,
 					// Disable sass minification so css-loader handles it
 					loader: prod ? ExtractTextPlugin.extract(['css', 'sass?outputStyle=nested']) : ['style', 'css', 'sass']
+				},
+				{
+					// JaaaaSON
+					test: /\.json$/,
+					loader: 'json'
 				},
 				{
 					// Images and other shenaniganiganidingdongs

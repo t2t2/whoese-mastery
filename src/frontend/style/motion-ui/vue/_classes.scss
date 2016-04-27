@@ -1,11 +1,11 @@
 @mixin vue-mui-transitions {
 	// Slide
-	.slide-down       { @include vue-mui-slide(up); }
-	.slide-down-fade  { @include vue-mui-slide(up, $fade: true); }
+	.slide-down       { @include vue-mui-slide(down); }
+	.slide-down-fade  { @include vue-mui-slide(down, $fade: true); }
 	.slide-left       { @include vue-mui-slide(right); }
 	.slide-left-fade  { @include vue-mui-slide(right, $fade: true); }
-	.slide-up         { @include vue-mui-slide(down); }
-	.slide-up-fade    { @include vue-mui-slide(down, $fade: true); }
+	.slide-up         { @include vue-mui-slide(up); }
+	.slide-up-fade    { @include vue-mui-slide(up, $fade: true); }
 	.slide-right      { @include vue-mui-slide(left); }
 	.slide-right-fade { @include vue-mui-slide(left, $fade: true); }
 

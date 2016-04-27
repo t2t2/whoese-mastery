@@ -1,3 +1,12 @@
 {
-	"debug": "*,-engine*,-express:router:*,-socket.io*"
+	"database": {
+		"options": {
+			"client": "sqlite3",
+			"connection": {
+				"filename": "./database/database.sqlite"
+			}
+		}
+	},
+	"debug": "*,-engine*,-express:router:*,-knex:client,-pool2,-socket.io*",
+	"key": "AlrightIllLetYouPassForThisTimeButPleaseMakeAMoreSecureKeyOkayOkay"
 }

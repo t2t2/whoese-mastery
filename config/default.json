@@ -1,4 +1,9 @@
 {
+	"database": {
+		"url": null,
+		"options": {}
+	},
 	"debug": false,
+	"key": "OhGodForTheLoveOfTheGodPleaseChangeMeToAMoreSecureStringOkayOkay",
 	"port": 8000
 }

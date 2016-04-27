@@ -10,3 +10,6 @@ config/local.json
 # Public files
 src/public/*
 !src/public/.gitkeep
+
+# Dev only
+database/database.sqlite

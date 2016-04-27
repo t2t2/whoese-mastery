@@ -5,6 +5,7 @@ import rest from 'feathers-rest'
 import socketio from 'feathers-socketio'
 import hooks from 'feathers-hooks'
 
+import authentication from './server/auth'
 import config from './config'
 import middleware from './server/middleware'
 import nunjucks from './server/nunjucks'
@@ -25,6 +26,8 @@ export default async function () {
 	app.configure(hooks())
 	app.configure(rest())
 	app.configure(socketio(socketioConfigure))
+
+	app.configure(authentication)
 
 	app.configure(middleware)
 

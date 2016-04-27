@@ -1,0 +1,9 @@
+.username {
+	align-items: center;
+	display: flex;
+	
+	&__region {
+		color: material-color('amber', '100');
+		margin-left: 0.5rem;
+	}
+}
