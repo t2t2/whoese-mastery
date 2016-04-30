@@ -5,5 +5,24 @@
 	},
 	"debug": false,
 	"key": "OhGodForTheLoveOfTheGodPleaseChangeMeToAMoreSecureStringOkayOkay",
-	"port": 8000
+	"port": 8000,
+	"services": {
+		"league": {
+			"rateLimits": [
+				{
+					"interval": 10, // 10 seconds
+					"max": 1
+				},
+				{
+					"interval": 600, // 10 minutes
+					"max": 500
+				}
+			],
+			"regions": {
+				"NA": "North America",
+				"EUW": "EU West",
+				"EUNE": "EU Nordic & East"
+			}
+		}
+	}
 }

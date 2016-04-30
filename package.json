@@ -5,7 +5,8 @@
   "scripts": {
     "build:dev": "webpack -d --progress --color",
     "build:prod": "webpack -p --progress --color --env.prod 1",
-    "dev": "npm-run-all --parallel dev:server dev:webpack",
+    "dev": "npm-run-all dev:nodemon-update-fix --parallel dev:server dev:webpack",
+    "dev:nodemon-update-fix": "nodemon -v || true",
     "dev:server": "cross-env NODE_ENV=development NODE_CONFIG='{\\\"dev\\\":true}' nodemon --exec babel-node src/start.js",
     "dev:webpack": "nodemon --exec babel-node --watch bin/dev-server.js --watch webpack.config.babel.js bin/dev-server.js",
     "lint": "xo --ext .js,.vue",
@@ -14,6 +15,7 @@
     "migrate:rollback": "knex migrate:rollback"
   },
   "dependencies": {
+    "axios": "^0.11.0",
     "babel-cli": "^6.7.7",
     "babel-core": "^6.7.7",
     "babel-loader": "^6.2.4",
@@ -23,6 +25,7 @@
     "babel-runtime": "^5.8.38",
     "body-parser": "^1.15.0",
     "bulma": "0.0.24",
+    "cache-manager": "^2.0.1",
     "config": "^1.20.1",
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
@@ -36,6 +39,7 @@
     "file-loader": "^0.8.5",
     "json-loader": "^0.5.4",
     "knex": "^0.10.0",
+    "limitus": "^2.2.1",
     "lodash": "^4.11.1",
     "moment": "^2.13.0",
     "motion-ui": "^1.2.2",

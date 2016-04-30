@@ -1,0 +1,9 @@
+.login {
+	@include tablet {
+		max-width: 25rem;
+	}
+	
+	&__header {
+		margin-bottom: 2rem;
+	}
+}

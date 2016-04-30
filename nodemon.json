@@ -3,5 +3,6 @@
 	"ignore": ["src/frontend/**/*.*", "src/public/**/*.*", "src/views/**/*.*"],
 	"events": {
 		"restart": "xo --ext .js,.vue"
-	}
+	},
+	"delay": 2
 }

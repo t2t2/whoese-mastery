@@ -16,8 +16,7 @@ Object.keys(config.entry).forEach(function (name) {
 	config.entry[name] = ['eventsource-polyfill', 'webpack-hot-middleware/client?reload=true'].concat(config.entry[name])
 })
 
-// webpack2 default
-config.devtool = '#cheap-module-eval-source-map'
+config.devtool = '#cheap-module-source-map'
 
 config.plugins = (config.plugins || []).concat([
 	// https://github.com/glenjamin/webpack-hot-middleware#installation--usage
