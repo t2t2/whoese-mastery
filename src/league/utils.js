@@ -114,7 +114,7 @@ export default class LeagueAPIUtils {
 				return response.data
 			}).catch(response => {
 				switch (response.status) {
-					case 404:
+					case 404: {
 						// Not found
 						let message = null
 						if (_.has(response, 'data.status.message')) {
@@ -122,8 +122,10 @@ export default class LeagueAPIUtils {
 						}
 
 						throw new errors.NotFound(message, response.data)
-					default:
+					}
+					default: {
 						throw response
+					}
 				}
 			})
 		})
@@ -141,13 +143,12 @@ export default class LeagueAPIUtils {
 				return regionInfo[path]
 			}
 			if (path in query) {
-				const value = query[path]
+				let value = query[path]
 				used.push(path)
 				if (Array.isArray(value)) {
-					return encodeURIComponent(value.join(','))
-				} else {
-					return encodeURIComponent(value)
+					value = value.join(',')
 				}
+				return encodeURIComponent(value)
 			}
 		})
 		const params = _.assign({}, _.omit(query, used), {

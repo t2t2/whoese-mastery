@@ -7,7 +7,7 @@ const debug = makeDebug('league:api:limiter')
 export default class LeagueAPILimiter {
 	constructor(core, limits) {
 		this.core = core
-		
+
 		// Set up limiter
 		const limiter = this.limiter = new Limitus()
 
@@ -144,7 +144,7 @@ export default class LeagueAPILimiter {
 				}
 			} catch (e) {
 				debug('Waiting more', region, e)
-				
+
 				// Not yet
 				this.limitQueueTimeouts[region] = setTimeout(() => {
 					this.workQueue(region)

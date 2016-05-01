@@ -1,3 +1,5 @@
+import cloneDeep from 'lodash/cloneDeep'
+
 export default {
 	data() {
 		return {
@@ -12,9 +14,28 @@ export default {
 		// hook into feathers client
 		const socket = this.$feathers.io
 
+		// Take the current user
+		const that = this
+		const oldSet = this.$feathers.set
+		this.$feathers.set = function(...args) {
+			if(args[0] == 'user') {
+				that.connection.user = cloneDeep(args[1])
+			}
+			oldSet.apply(this, args)
+		}
+
 		socket.on('connect', () => {
 			this.connection.connected = true
 			this.connection.reason = ''
+
+			// Resumse authenticated user
+			if(this.$feathers.get('token')) {
+				this.$feathers.authenticate().then(result => {
+					this.connection.user = cloneDeep(result.data)
+				}).catch(error => {
+					this.connection.user = null
+				})
+			}
 		})
 
 		socket.on('connect_error', reason => {

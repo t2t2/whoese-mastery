@@ -42,7 +42,8 @@
 	const taglines = [
 		'A game of knowing who of your friends plays the meanest Rengar.',
 		'A game of figuring out why your friend has 100k mastery points on Swain.',
-		'A game of knowing which team comps you should just ff@20.'
+		'A game of knowing which team comps you should just ff@20.',
+		"A game where you still won't get S+"
 	]
 
 	export default {

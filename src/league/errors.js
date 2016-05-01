@@ -8,7 +8,7 @@ class LeagueAPIError extends Error {
 		this.data = data
 		this.code = code
 	}
-	
+
 	toJSON() {
 		// Add message to json
 		return {
@@ -19,7 +19,6 @@ class LeagueAPIError extends Error {
 		}
 	}
 }
-
 
 export class BadRequest extends LeagueAPIError {
 	constructor(message, data) {

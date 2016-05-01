@@ -1,6 +1,6 @@
-import ModuleBase from './base'
-
 import {NotFound} from '../errors'
+
+import ModuleBase from './base'
 
 export default class Summoner extends ModuleBase {
 	constructor(core) {
