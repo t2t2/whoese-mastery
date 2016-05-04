@@ -8,6 +8,7 @@
 	"port": 8000,
 	"services": {
 		"league": {
+			"defaultDataRegion": "EUW",
 			"rateLimits": [
 				{
 					"interval": 10, // 10 seconds

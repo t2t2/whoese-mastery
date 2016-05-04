@@ -17,8 +17,8 @@ export default {
 		// Take the current user
 		const that = this
 		const oldSet = this.$feathers.set
-		this.$feathers.set = function(...args) {
-			if(args[0] == 'user') {
+		this.$feathers.set = function (...args) {
+			if (args[0] === 'user') {
 				that.connection.user = cloneDeep(args[1])
 			}
 			oldSet.apply(this, args)
@@ -29,10 +29,10 @@ export default {
 			this.connection.reason = ''
 
 			// Resumse authenticated user
-			if(this.$feathers.get('token')) {
+			if (this.$feathers.get('token')) {
 				this.$feathers.authenticate().then(result => {
 					this.connection.user = cloneDeep(result.data)
-				}).catch(error => {
+				}).catch(() => {
 					this.connection.user = null
 				})
 			}

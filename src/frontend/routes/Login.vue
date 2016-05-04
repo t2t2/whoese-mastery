@@ -75,7 +75,12 @@
 				this.doing = true
 				try {
 					const response = await this.$feathers.authenticate(this.credentials)
-					console.log(response)
+					
+					if (this.$route.query.next) {
+						this.$route.router.go(this.$route.query.next)
+					} else {
+						this.$route.router.go({name: 'home'})
+					}
 				} catch(e) {
 					this.errors = e
 				}

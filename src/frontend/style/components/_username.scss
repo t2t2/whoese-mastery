@@ -2,6 +2,9 @@
 	align-items: center;
 	display: flex;
 	
+	&__image {
+		margin-right: 0.5rem;
+	}
 	&__region {
 		color: material-color('amber', '100');
 		margin-left: 0.5rem;

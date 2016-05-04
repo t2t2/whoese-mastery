@@ -11,6 +11,7 @@ import database from './database'
 import middleware from './server/middleware'
 import nunjucks from './server/nunjucks'
 import services from './server/services'
+import queue from './queue'
 import {configure as socketioConfigure} from './server/socket'
 
 const debug = makeDebug('app:server')
@@ -36,6 +37,8 @@ export default async function () {
 	app.configure(services)
 
 	app.configure(middleware)
+
+	app.configure(queue)
 
 	await startServer(app)
 

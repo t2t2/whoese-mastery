@@ -11,7 +11,7 @@ export default class ModuleBase {
 		return key
 	}
 
-	_checkForCached(key, freshDataGetter) {
-		return this.core.utils.checkForCachedResponse(key, this.cacheDuration, freshDataGetter)
+	_checkForCached(key, freshDataGetter, cacheDuration = this.cacheDuration) {
+		return this.core.utils.checkForCachedResponse(key, cacheDuration, freshDataGetter)
 	}
 }

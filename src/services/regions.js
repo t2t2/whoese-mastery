@@ -2,9 +2,7 @@ import _ from 'lodash'
 import memory from 'feathers-memory'
 
 import config from '../config'
-import {
-	disable
-} from '../hooks'
+import {disable} from '../hooks'
 
 // Dummy service to provide list of regions
 const regions = _.mapValues(config.get('services.league.regions'), (value, key) => {

@@ -11,7 +11,7 @@
 					<div class="home__action_description">
 						<p>Create a room to invite your friends to!</p>
 					</div>
-					<button class="button button--main">Create</button>
+					<button class="button button--main" v-link="{name: 'create-game'}">Create</button>
 				</div>
 				<!--
 				<div class="home__action">

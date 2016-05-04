@@ -1,9 +1,10 @@
+import _ from 'lodash'
 import errors from 'feathers-errors/handler'
 
 export default function () {
 	const app = this
 
-	app.use(historyAPIFallback)
+	app.use(historyAPIFallback.bind(app))
 	app.use(errors({
 		html: errorRenderer
 	}))
@@ -11,9 +12,13 @@ export default function () {
 
 // Fallback to help with history api on the frontend
 // based on https://github.com/cbas/express-history-api-fallback but with views
-function historyAPIFallback(req, res, next) {
+async function historyAPIFallback(req, res, next) {
 	if (req.method === 'GET' && req.accepts('html')) {
-		res.render('index.html')
+		const settings = _.keyBy(await this.service('api/settings').find(Object.assign({}, req.feathers)), 'key')
+
+		res.render('index.html', {
+			settings
+		})
 	} else {
 		next()
 	}

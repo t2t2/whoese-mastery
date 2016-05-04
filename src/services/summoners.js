@@ -1,9 +1,7 @@
 import service from 'feathers-knex'
 
 import knex from '../database'
-import {
-	disable, updateTimestamps
-} from '../hooks'
+import {disable, updateTimestamps} from '../hooks'
 
 export default function () {
 	const app = this

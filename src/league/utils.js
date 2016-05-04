@@ -102,32 +102,44 @@ export default class LeagueAPIUtils {
 		})
 	}
 
+	/**
+	 * Make request that follows rate limiting rules
+	 */
 	makeRateLimitedRequest(request) {
 		const region = request.region
 
 		return this.limiter.schedule(region).then(async () => {
 			await this.limiter.usesRateLimit(region)
 
-			const axiosRequest = this.createRequestObject(request)
+			return this._doActualRequest(request)
+		})
+	}
 
-			return axios(axiosRequest).then(response => {
-				return response.data
-			}).catch(response => {
-				switch (response.status) {
-					case 404: {
-						// Not found
-						let message = null
-						if (_.has(response, 'data.status.message')) {
-							message = _.get(response, 'data.status.message')
-						}
+	makeNonlimitedRequest(request) {
+		return this._doActualRequest(request)
+	}
 
-						throw new errors.NotFound(message, response.data)
+	_doActualRequest(request) {
+		const axiosRequest = this.createRequestObject(request)
+
+		return axios(axiosRequest).then(response => {
+			return response.data
+		}).catch(response => {
+			switch (response.status) {
+				case 404: {
+					// Not found
+					let message = null
+					if (_.has(response, 'data.status.message')) {
+						message = _.get(response, 'data.status.message')
 					}
-					default: {
-						throw response
-					}
+
+					throw new errors.NotFound(message, response.data)
 				}
-			})
+				default: {
+					console.log(axiosRequest, response)
+					throw response
+				}
+			}
 		})
 	}
 
@@ -158,7 +170,7 @@ export default class LeagueAPIUtils {
 		const axiosRequest = {
 			url,
 			method: request.method || 'GET',
-			baseURL: 'https://' + regionInfo.host,
+			baseURL: 'https://' + (request.host ? request.host : regionInfo.host),
 			params,
 			responseType: 'json'
 		}

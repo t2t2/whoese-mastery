@@ -1,3 +1,5 @@
+/* eslint-disable xo/no-process-exit */
+
 // Ensure config is loaded first to make sure debug gets configured
 import config from './config'
 

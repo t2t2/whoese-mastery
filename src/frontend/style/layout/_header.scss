@@ -1,6 +1,10 @@
 .header {
 	background-color: material-color('blue-grey', '800');
 	border-bottom: 1px solid $border;
+
+	@include tablet {
+		height: ($header-height + 1px);
+	}
 }
 
 .header-brand {

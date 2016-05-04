@@ -21,6 +21,10 @@ export default function () {
 
 	env.addGlobal('dev', dev)
 
+	env.addFilter('json', (obj) => {
+		return JSON.stringify(obj)
+	})
+
 	// Pretty dump
 	env.addFilter('dump', (obj) => {
 		return JSON.stringify(obj, null, '  ')

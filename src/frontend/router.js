@@ -11,10 +11,22 @@ export default {
 			System.import('./routes/About.vue').then(resolve)
 		}
 	},
+	'create': {
+		name: 'create-game',
+		component(resolve) {
+			System.import('./routes/CreateGame.vue').then(resolve)
+		}
+	},
 	'login': {
 		name: 'login',
 		component(resolve) {
 			System.import('./routes/Login.vue').then(resolve)
+		}
+	},
+	'*': {
+		name: '404',
+		component(resolve) {
+			System.import('./routes/404.vue').then(resolve)
 		}
 	}
 }

@@ -1,5 +1,6 @@
 export default {
 	props: {
-		connection: Object
+		connection: Object,
+		settings: Object
 	}
 }

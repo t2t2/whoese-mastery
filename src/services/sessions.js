@@ -1,9 +1,7 @@
 import service from 'feathers-knex'
 
 import knex from '../database'
-import {
-	disable, updateTimestamps
-} from '../hooks'
+import {disable, populate, updateTimestamps} from '../hooks'
 
 export default function () {
 	const app = this
@@ -20,5 +18,18 @@ export default function () {
 		update: [disable('external'), updateTimestamps()],
 		patch: [disable('external'), updateTimestamps()],
 		remove: [disable('external')]
+	})
+
+	sessionsService.after({
+		all: [
+			populate('summoner', {
+				service: 'api/summoners',
+				field: 'summoner_id'
+			}),
+			populate('player', {
+				service: 'api/players',
+				field: 'player_id'
+			})
+		]
 	})
 }

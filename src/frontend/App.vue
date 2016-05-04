@@ -17,10 +17,12 @@
 					<span></span>
 				</div>
 				<div class="header-right">
-					<div class="username header-item" v-if="connection.user">
-						<div class="username__name">the third eagle of the apocalypse</div>
-						<div class="username__region">EUW</div>
-					</div>
+					<summoner
+						:settings="settings"
+						:summoner="connection.user.summoner"
+						class="header-item"
+						v-if="connection.user">
+					</summoner>
 				</div>
 			</div>
 		</header>
@@ -35,7 +37,8 @@
 				transition-mode="out-in"
 				class="fast"
 				v-ref:page
-				:connection="connection">
+				:connection="connection"
+				:settings="settings">
 			</router-view>
 		</div>
 		
@@ -50,10 +53,34 @@
 </template>
 
 <script>
+	import Summoner from './components/Summoner.vue' 
+
 	import connectionMixin from './mixins/connection'
+
+	let defaultSettings = {}
+
+	const entryElement = document.getElementById('script-entry')
+	if (entryElement) {
+		const settingsString = entryElement.getAttribute('data-settings')
+		if (settingsString) {
+			defaultSettings = JSON.parse(settingsString)
+		}
+	}
 
 	export default {
 		mixins: [connectionMixin],
+		components: {
+			Summoner
+		},
+		computed: {
+			settings() {
+				if (Object.keys(this.settingsData).length) {
+					return this.settingsData
+				} else {
+					return defaultSettings
+				}
+			}
+		},
 		data() {
 			return {
 				// Toggle menu (on mobile)
@@ -63,6 +90,12 @@
 		methods: {
 			toggleMenu() {
 				this.showMenu = !this.showMenu
+			}
+		},
+		sync: {
+			settingsData: {
+				service: 'api/settings',
+				idField: 'key'
 			}
 		}
 	}

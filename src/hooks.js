@@ -5,8 +5,7 @@ export var {
 } = auth.hooks
 
 export {
-	disable,
-	remove
+	disable, populate, remove, removeQuery, pluck, pluckQuery
 } from 'feathers-hooks'
 
 import errors from 'feathers-errors'
