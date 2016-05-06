@@ -146,7 +146,7 @@ export default class QueueManager {
 
 				return job
 			} catch (e) {
-				debug("Couldn't reserve job", e)
+				debug('Couldn\'t reserve job', e)
 				throw e
 			}
 		})

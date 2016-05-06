@@ -32,7 +32,7 @@ export default {
 	'room/:room_id': {
 		name: 'room',
 		component(resolve) {
-			System.import('./routes/Room.vue').then(resolve)			
+			System.import('./routes/Room.vue').then(resolve)
 		}
 	},
 	'*': {

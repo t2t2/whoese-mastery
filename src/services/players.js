@@ -8,7 +8,7 @@ import {disable, pluck, populate, populateUser, restrictToAuthenticated, verifyT
 function assignPlayerToSession() {
 	return async (hook) => {
 		await hook.app.service('api/sessions').patch(hook.params.user.id, {
-			player_id: hook.result.id
+			player_id: hook.result.id // eslint-disable-line camelcase
 		})
 	}
 }
@@ -24,7 +24,7 @@ function checkIfNextRoomOwnerIsNeeded() {
 		// Choose another player
 		const newOwner = await app.service('api/players').find({
 			query: {
-				room_id: room.id,
+				room_id: room.id, // eslint-disable-line camelcase
 				$limit: 1
 			}
 		})
@@ -32,7 +32,7 @@ function checkIfNextRoomOwnerIsNeeded() {
 		console.log(newOwner)
 		if (newOwner.length) {
 			await app.service('api/rooms').patch(room.id, {
-				owner_player_id: newOwner[0].id
+				owner_player_id: newOwner[0].id // eslint-disable-line camelcase
 			})
 		} else {
 			// Remove room
@@ -45,9 +45,8 @@ function checkIfNextRoomOwnerIsNeeded() {
 			return Bluebird.mapSeries(hook.result, (session) => {
 				return checkRoomForUpdate(session, hook.app)
 			})
-		} else {
-			return checkRoomForUpdate(hook.result, hook.app)
 		}
+		return checkRoomForUpdate(hook.result, hook.app)
 	}
 }
 
@@ -58,7 +57,7 @@ function ensureRoomNotFull() {
 		const [players, limitsSetting] = await Promise.all([
 			hook.app.service('api/players').find({
 				query: {
-					room_id: roomID
+					room_id: roomID // eslint-disable-line camelcase
 				}
 			}),
 			hook.app.service('api/settings').get('limits')
@@ -81,7 +80,7 @@ function findRoomByCode() {
 
 		const room = await hook.app.service('api/rooms').find({
 			query: {
-				join_code: joinCode,
+				join_code: joinCode, // eslint-disable-line camelcase
 				$limit: 1
 			}
 		})
@@ -90,7 +89,7 @@ function findRoomByCode() {
 			throw new errors.NotFound('Unknown room')
 		}
 
-		hook.data.room_id = room[0].id
+		hook.data.room_id = room[0].id // eslint-disable-line camelcase
 	}
 }
 
@@ -104,7 +103,7 @@ function mustNotBeInARoom() {
 
 function setSummoner() {
 	return (hook) => {
-		hook.data.summoner_id = hook.params.user.summoner_id
+		hook.data.summoner_id = hook.params.user.summoner_id // eslint-disable-line camelcase
 	}
 }
 
@@ -145,5 +144,4 @@ export default function () {
 		create: [assignPlayerToSession()],
 		remove: [checkIfNextRoomOwnerIsNeeded()]
 	})
-
 }

@@ -12,30 +12,29 @@ import errors from 'feathers-errors'
 
 // Taken from feathers-hooks, fixed to remove query
 export function populate(target, options) {
-	options = Object.assign({}, options);
+	options = Object.assign({}, options)
 
 	if (!options.service) {
-		throw new Error('You need to provide a service');
+		throw new Error('You need to provide a service')
 	}
 
-	const field = options.field || target;
+	const field = options.field || target
 
 	return function (hook) {
 		function populate(item) {
 			if (!item[field]) {
-				return Promise.resolve(item);
+				return Promise.resolve(item)
 			}
 
 			// Find by the field value by default or a custom query
-			const id = item[field];
+			const id = item[field]
 
-			// If it's a mongoose model then
 			if (typeof item.toObject === 'function') {
-				item = item.toObject(options);
-			}
-			// If it's a Sequelize model
-			else if (typeof item.toJSON === 'function') {
-				item = item.toJSON(options);
+				// If it's a mongoose model then
+				item = item.toObject(options)
+			} else if (typeof item.toJSON === 'function') {
+				// If it's a Sequelize model
+				item = item.toJSON(options)
 			}
 
 			const params = Object.assign({}, hook.params, {
@@ -46,41 +45,41 @@ export function populate(target, options) {
 				.get(id, params)
 				.then(relatedItem => {
 					if (relatedItem) {
-						item[target] = relatedItem;
+						item[target] = relatedItem
 					}
 
-					return item;
-				}).catch(() => item);
+					return item
+				}).catch(() => item)
 		}
 
 		if (hook.type === 'after') {
-			const isPaginated = (hook.method === 'find' && hook.result.data);
-			const data = isPaginated ? hook.result.data : hook.result;
+			const isPaginated = (hook.method === 'find' && hook.result.data)
+			const data = isPaginated ? hook.result.data : hook.result
 
 			if (Array.isArray(data)) {
 				return Promise.all(data.map(populate)).then(results => {
 					if (isPaginated) {
-						hook.result.data = results;
+						hook.result.data = results
 					} else {
-						hook.result = results;
+						hook.result = results
 					}
 
-					return hook;
-				});
+					return hook
+				})
 			}
 
 			// Handle single objects.
 			return populate(hook.result).then(item => {
-				hook.result = item;
-				return hook;
-			});
+				hook.result = item
+				return hook
+			})
 		}
-	};
+	}
 }
 
 // Mostly taken from feathers-hooks, changed to run checking per thing
 export function removeIndividually(...fields) {
-	const callback = typeof fields[fields.length - 1] === 'function' ? fields.pop() : (hook) => !!hook.params.provider
+	const callback = typeof fields[fields.length - 1] === 'function' ? fields.pop() : (hook) => Boolean(hook.params.provider)
 
 	const removeFields = (hook, data) => {
 		if (callback(hook, data)) {
@@ -98,19 +97,17 @@ export function removeIndividually(...fields) {
 		if (result) {
 			if (Array.isArray(result)) {
 				// array
-				result.forEach(removeFields.bind(this, hook));
-			} else {
-				if (result.data) {
-					// paginated
-					if (Array.isArray(result.data)) {
-						result.data.forEach(removeFields.bind(this, hook));
-					} else {
-						removeFields(hook, result.data);
-					}
+				result.forEach(removeFields.bind(this, hook))
+			} else if (result.data) {
+				// paginated
+				if (Array.isArray(result.data)) {
+					result.data.forEach(removeFields.bind(this, hook))
 				} else {
-					// one thing
-					removeFields(hook, result)
+					removeFields(hook, result.data)
 				}
+			} else {
+				// one thing
+				removeFields(hook, result)
 			}
 		}
 

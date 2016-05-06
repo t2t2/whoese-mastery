@@ -9,7 +9,7 @@
     "dev:nodemon-update-fix": "nodemon -v || true",
     "dev:server": "cross-env NODE_ENV=development NODE_CONFIG='{\\\"dev\\\":true}' nodemon --exec babel-node src/start.js",
     "dev:webpack": "nodemon --exec babel-node --watch bin/dev-server.js --watch webpack.config.babel.js bin/dev-server.js",
-    "lint": "xo --ext .js,.vue",
+    "lint": "xo",
     "migrate": "knex migrate:latest",
     "migrate:make": "knex migrate:make",
     "migrate:rollback": "knex migrate:rollback"
@@ -64,7 +64,6 @@
   },
   "devDependencies": {
     "cross-env": "^1.0.7",
-    "eslint-plugin-html": "^1.4.0",
     "eventsource-polyfill": "^0.9.6",
     "express": "^4.13.4",
     "http-proxy-middleware": "^0.14.0",
@@ -80,9 +79,6 @@
     "exnext": true,
     "ignores": [
       "src/public/**/*"
-    ],
-    "plugins": [
-      "html"
     ],
     "semicolon": false,
     "overrides": [

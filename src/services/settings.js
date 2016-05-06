@@ -5,26 +5,24 @@ import {disable} from '../hooks'
 
 function jsonValue(hook) {
 	if (Array.isArray(hook.data)) {
-		hook.data.map(item => {
-			if('value' in item) {
+		hook.data.forEach(item => {
+			if ('value' in item) {
 				item.value = JSON.stringify(item.value)
 			}
 		})
-	} else {
-		if('value' in hook.data) {
-			hook.data.value = JSON.stringify(hook.data.value)
-		}
+	} else if ('value' in hook.data) {
+		hook.data.value = JSON.stringify(hook.data.value)
 	}
 }
 
 function deJsonValue(hook) {
-	const result = hook.result
+	let result = hook.result
 	if (result.data) {
 		result = result.data
 	}
 
 	if (Array.isArray(result)) {
-		result.map(item => {
+		result.forEach(item => {
 			item.value = JSON.parse(item.value)
 		})
 	} else {

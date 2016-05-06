@@ -37,7 +37,7 @@ export default {
 				})
 			}
 		})
-		
+
 		socket.on('user', user => {
 			this.connection.user = user
 		})

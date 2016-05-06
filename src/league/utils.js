@@ -166,8 +166,8 @@ export default class LeagueAPIUtils {
 		const params = _({}).assign(_.omit(query, used), {
 			api_key: this.core.key // eslint-disable-line camelcase
 		}).mapValues((value) => {
-			if(Array.isArray(value)) {
-				return array.join(',')
+			if (Array.isArray(value)) {
+				return value.join(',')
 			}
 			return value
 		}).value()

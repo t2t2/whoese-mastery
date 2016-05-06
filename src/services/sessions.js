@@ -16,10 +16,10 @@ function isAboutSelf(data, connection) {
 function removePlayerIfPossible() {
 	async function checkPlayerForRemoval(playerID, app) {
 		const player = await app.service('api/players').get(playerID)
-		const room = await app.service('api/rooms').get(player.room_id)
-		
+		// const room = await app.service('api/rooms').get(player.room_id)
+
 		// TODO: Only if room isn't playing
-		
+
 		// Remove player
 		await app.service('api/players').remove(player.id)
 	}
@@ -29,9 +29,8 @@ function removePlayerIfPossible() {
 			return Bluebird.mapSeries(hook.result, (session) => {
 				return checkPlayerForRemoval(session.player_id, hook.app)
 			})
-		} else {
-			return checkPlayerForRemoval(hook.result.player_id, hook.app)
 		}
+		return checkPlayerForRemoval(hook.result.player_id, hook.app)
 	}
 }
 

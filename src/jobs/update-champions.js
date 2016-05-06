@@ -7,7 +7,7 @@ import league from '../league/api'
 const debug = makeDebug('app:job')
 
 export default {
-	async handle(job) {
+	async handle() {
 		const app = this
 
 		debug('Running champion update')

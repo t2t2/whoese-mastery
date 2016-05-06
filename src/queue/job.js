@@ -1,5 +1,3 @@
-import moment from 'moment'
-
 export default class Job {
 	constructor(manager, job) {
 		this.manager = manager

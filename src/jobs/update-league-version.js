@@ -9,7 +9,7 @@ const debug = makeDebug('app:job')
 
 export default {
 	repeating: moment.duration(1, 'days'),
-	async handle(job) {
+	async handle() {
 		const app = this
 
 		debug('Running League Update')

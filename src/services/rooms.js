@@ -4,7 +4,7 @@ import randomstring from 'randomstring'
 import service from 'feathers-knex'
 
 import knex from '../database'
-import {disable, updateTimestamps, pluck, populateUser, remove, removeIndividually, restrictToAuthenticated, verifyToken} from '../hooks'
+import {disable, updateTimestamps, pluck, populateUser, removeIndividually, restrictToAuthenticated, verifyToken} from '../hooks'
 
 function addPlayerAsRoomOwner() {
 	return async (hook) => {
@@ -15,7 +15,7 @@ function addPlayerAsRoomOwner() {
 		const createPlayerParams = _.assign({}, hook.params, {
 			query: {
 				// join_code is removed in .get, .create is internally calling .get so it get's sniped away
-				join_code: hook.data.join_code
+				join_code: hook.data.join_code // eslint-disable-line camelcase
 			}
 		})
 
@@ -24,16 +24,16 @@ function addPlayerAsRoomOwner() {
 
 		// Set as owner
 		await hook.app.service('api/rooms').patch(hook.result.id, {
-			owner_player_id: player.id
+			owner_player_id: player.id // eslint-disable-line camelcase
 		})
-		hook.result.owner_player_id = player.id
+		hook.result.owner_player_id = player.id // eslint-disable-line camelcase
 	}
 }
 
 function generateRoomCode() {
 	async function getRandomCode({app}) {
 		let code
-		while (true) {
+		while (!code) {
 			code = randomstring.generate({
 				length: 8,
 				readable: true,
@@ -42,13 +42,14 @@ function generateRoomCode() {
 			// Make sure doesn't exist
 			const exists = await app.service('api/rooms').find({
 				query: {
-					join_code: code,
+					join_code: code, // eslint-disable-line camelcase
 					$limit: 1
 				}
 			})
 			if (!exists.length) {
 				break
 			}
+			code = null
 		}
 
 		return code
@@ -56,7 +57,7 @@ function generateRoomCode() {
 
 	return async (hook) => {
 		const code = await getRandomCode(hook)
-		hook.data.join_code = code
+		hook.data.join_code = code // eslint-disable-line camelcase
 		return hook
 	}
 }
@@ -97,7 +98,9 @@ export default function () {
 	roomsService.after({
 		all: [
 			removeIndividually('join_code', (hook, room) => {
-				return hook.method !== 'create' && !!hook.params.provider && (!hook.params.user || !hook.params.user.player_id || hook.params.user.player.room_id !== room.id)
+				return hook.method !== 'create' && Boolean(hook.params.provider) && (
+					!hook.params.user || !hook.params.user.player_id || hook.params.user.player.room_id !== room.id // eslint-disable-line camelcase
+				)
 			})
 		],
 		create: [
