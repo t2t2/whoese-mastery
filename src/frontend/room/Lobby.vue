@@ -2,7 +2,7 @@
 	<div class="room-lobby">
 		<div class="room-lobby__header">
 			<div class="room-lobby__info">
-				<button v-if="isOwner" class="button" :disabled="gameCanBeStarted">Start Game</button>
+				<button v-if="isOwner" class="button" :disabled="!gameCanBeStarted">Start Game</button>
 			</div>
 			<join-widget class="room-lobby__join" :room="room"></join-widget>
 		</div>
@@ -19,7 +19,7 @@
 	export default {
 		computed: {
 			gameCanBeStarted() {
-				return Object.keys(this.players).length < 2
+				return Object.keys(this.players).length >= 2
 			}
 		},
 		data() {
