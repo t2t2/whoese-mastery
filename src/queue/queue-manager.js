@@ -41,6 +41,40 @@ export default class QueueManager {
 	}
 
 	/**
+	 * Push a job to the queue to do it
+	 */
+	async push(name, payload, queue) {
+		return this._storeNewJob({
+			queue,
+			name,
+			payload,
+			available: moment().toDate()
+		})
+	}
+
+	/**
+	 * Push a job to the queue to do it later
+	 */
+	async later(when, name, payload, queue) {
+		if (typeof when === 'number') {
+			when = moment.duration(when, 'seconds')
+		}
+		if (moment.isDuration(when)) {
+			when = moment().add(when)
+		}
+		if (!moment.isMoment(when)) {
+			when = moment(when)
+		}
+
+		return this._storeNewJob({
+			queue,
+			name,
+			payload,
+			available: when.toDate()
+		})
+	}
+
+	/**
 	 * Register jobs onto the queue manager
 	 */
 	registerJobs(newJobs) {
@@ -271,7 +305,7 @@ export default class QueueManager {
 		return this.service.create({
 			queue: data.queue || this.queues[0],
 			name: data.name,
-			payload: JSON.stringy(data.payload),
+			payload: JSON.stringify(data.payload),
 			attempts: 0,
 			reserved: false,
 			/* eslint-disable camelcase */

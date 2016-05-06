@@ -1,5 +1,6 @@
 import QueueManager from './queue/queue-manager'
 
+import updateChampions from './jobs/update-champions'
 import updateLeagueVersion from './jobs/update-league-version'
 
 export default function () {
@@ -11,6 +12,7 @@ export default function () {
 	})
 
 	app.queue.registerJobs({
+		updateChampions,
 		updateLeagueVersion
 	})
 }

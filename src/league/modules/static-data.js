@@ -8,17 +8,36 @@ export default class StaticData extends ModuleBase {
 		this.cacheDuration = 60 * 60
 	}
 
-	realm(region) {
+	champions(region, params = {}) {
 		const key = this._makeKey({
-			method: 'region',
-			region
+			method: 'champions',
+			region,
+			params
 		})
-		
+
+		return this._checkForCached(key, () => {
+			return this.core.utils.makeNonlimitedRequest(Object.assign({
+				host: 'global.api.pvp.net',
+				url: '/api/lol/static-data/{region}/v1.2/champion',
+				region,
+				query: params
+			}, params))
+		})
+	}
+
+	realm(region, params = {}) {
+		const key = this._makeKey({
+			method: 'realm',
+			region,
+			params
+		})
+
 		return this._checkForCached(key, () => {
 			return this.core.utils.makeNonlimitedRequest({
 				host: 'global.api.pvp.net',
 				url: '/api/lol/static-data/{region}/v1.2/realm',
-				region
+				region,
+				query: params
 			})
 		})
 	}

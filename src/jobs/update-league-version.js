@@ -1,15 +1,18 @@
 import _ from 'lodash'
+import makeDebug from 'debug'
 import moment from 'moment'
 
 import config from '../config'
 import league from '../league/api'
+
+const debug = makeDebug('app:job')
 
 export default {
 	repeating: moment.duration(1, 'days'),
 	async handle(job) {
 		const app = this
 
-		console.log('Running League Update')
+		debug('Running League Update')
 
 		const [version, databaseVersion] = await Promise.all([
 			league.static.realm(config.get('services.league.defaultDataRegion')),
@@ -23,5 +26,7 @@ export default {
 				value: shouldBe
 			})
 		}
+
+		await app.queue.push('updateChampions')
 	}
 }

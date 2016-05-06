@@ -163,9 +163,14 @@ export default class LeagueAPIUtils {
 				return encodeURIComponent(value)
 			}
 		})
-		const params = _.assign({}, _.omit(query, used), {
+		const params = _({}).assign(_.omit(query, used), {
 			api_key: this.core.key // eslint-disable-line camelcase
-		})
+		}).mapValues((value) => {
+			if(Array.isArray(value)) {
+				return array.join(',')
+			}
+			return value
+		}).value()
 
 		const axiosRequest = {
 			url,

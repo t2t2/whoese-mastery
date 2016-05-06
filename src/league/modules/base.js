@@ -5,13 +5,13 @@ export default class ModuleBase {
 		this.cacheDuration = 5 * 60
 	}
 
+	_checkForCached(key, freshDataGetter, cacheDuration = this.cacheDuration) {
+		return this.core.utils.checkForCachedResponse(key, cacheDuration, freshDataGetter)
+	}
+
 	_makeKey(key) {
 		key.moduleName = this.name
 
 		return key
-	}
-
-	_checkForCached(key, freshDataGetter, cacheDuration = this.cacheDuration) {
-		return this.core.utils.checkForCachedResponse(key, cacheDuration, freshDataGetter)
 	}
 }

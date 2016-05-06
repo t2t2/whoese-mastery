@@ -1,3 +1,4 @@
+import championsService from '../services/champions'
 import jobsService from '../services/internal/jobs'
 import playersService from '../services/players'
 import regionsService from '../services/regions'
@@ -9,6 +10,7 @@ import summonersService from '../services/summoners'
 export default function () {
 	const app = this
 
+	app.configure(championsService)
 	app.configure(jobsService)
 	app.configure(playersService)
 	app.configure(regionsService)
