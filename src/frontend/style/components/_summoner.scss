@@ -1,0 +1,31 @@
+.summoner {
+	align-items: center;
+	display: flex;
+	
+	&__image {
+		height: 24px;
+		margin-right: 0.5rem;
+		width: 24px;
+	}
+	&__region {
+		color: material-color('amber', '100');
+		margin-left: 0.5rem;
+	}
+	
+	@include tablet {
+		&--large {
+			flex-direction: column;
+			.summoner__image {
+				margin-right: 0;
+				width: 100%;
+				max-width: 128px;
+				height: 100%;
+				margin-bottom: 0.5rem;
+			}
+			.summoner__region {
+				margin-left: 0;
+				margin-top: 0.5rem;
+			}
+		}
+	}
+}

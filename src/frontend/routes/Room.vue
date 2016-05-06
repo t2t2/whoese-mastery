@@ -9,6 +9,7 @@
 				:is-owner="isOwner"
 				:players="players"
 				:room="room"
+				:settings="settings"
 				:user-player="userPlayer">
 			</lobby>
 			<button @click="debug = !debug">Debug</button>

@@ -1,10 +1,12 @@
 <template>
-	<div class="username">
-		<figure class="image username__image">
+	<div class="summoner">
+		<figure class="image summoner__image">
 			<img :src="icon" />
 		</figure>
-		<div class="username__name" v-text="name"></div>
-		<div class="username__region" v-text="region">EUW</div>
+		<div class="summoner__name">
+			{{name}}
+			<span class="summoner__region" v-text="region"></span>
+		</div>
 	</div>
 </template>
 

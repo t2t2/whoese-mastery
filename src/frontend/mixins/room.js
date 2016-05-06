@@ -3,6 +3,7 @@ export default {
 		isOwner: Boolean,
 		players: Object,
 		room: null,
+		settings: Object,
 		userPlayer: null
 	}
 }

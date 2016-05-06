@@ -22,6 +22,7 @@
 }
 
 .room-lobby {
+	align-items: center;
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
@@ -29,6 +30,7 @@
 	&__header {
 		display: flex;
 		flex-direction: column;
+		width: 100%;
 		@include tablet {
 			flex-direction: row;
 		}
@@ -46,7 +48,18 @@
 	
 	&__players {
 		display: flex;
-		max-width: 60rem;
+		max-width: 70rem;
+		margin-top: 1rem;
+		width: 100%;
+	}
+	&__player {
+		@include tablet {
+			width: 25%;
+			padding: 0.5rem;
+		}
+		@include desktop {
+			width: 20%;
+		}
 	}
 }
 
