@@ -16,7 +16,57 @@
 
 .room {
 	display: flex;
+	flex-direction: column;
 	flex-grow: 1;
 	width: 100%;
+}
+
+.room-lobby {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
 	
+	&__header {
+		display: flex;
+		flex-direction: column;
+		@include tablet {
+			flex-direction: row;
+		}
+	}
+	
+	&__info {
+		flex-grow: 1;
+	}
+	
+	&__join {
+		@include tablet {
+			width: 18rem;
+		}
+	}
+	
+	&__players {
+		display: flex;
+		max-width: 60rem;
+	}
+}
+
+
+.room-invite {
+	background-color: material-color('orange', '400');
+	padding: 1rem;
+		
+	.title {
+		color: material-color('grey', '50');
+		margin-bottom: 0.5rem;
+	}
+	
+	&__url {
+		background-color: material-color('orange', '500');
+		border: none;
+		color: material-color('grey', '50');
+		font-size: 0.7rem;
+		margin-top: 0.5rem;
+		padding: 0.5rem;
+		width: 100%;
+	}
 }

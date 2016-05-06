@@ -5,8 +5,18 @@
 			<a v-link="{name: 'home'}">Go home</a>
 		</div>
 		<div class="room" v-if="!$loadingSyncers && room">
-			<pre v-text="room | json"></pre>
-			<pre v-text="players | json"></pre>
+			<lobby
+				:is-owner="isOwner"
+				:players="players"
+				:room="room"
+				:user-player="userPlayer">
+			</lobby>
+			<button @click="debug = !debug">Debug</button>
+			<div v-if="debug">
+				<pre v-text="room | json"></pre>
+				<pre v-text="players | json"></pre>
+				<pre v-text="userPlayer | json"></pre>
+			</div>
 		</div>
 	</div>
 </template>
@@ -14,16 +24,40 @@
 <script>
 	import toNumber from 'lodash/toNumber'
 	
+	import Lobby from '../room/Lobby.vue'
+	
 	import pageMixin from '../mixins/page'
 
 	export default {
+		components: {
+			Lobby
+		},
 		computed: {
+			isOwner() {
+				if(this.userPlayer && this.room) {
+					return this.userPlayer.id === this.room.owner_player_id
+				}
+				return false
+			},
 			roomID() {
 				return toNumber(this.$route.params.room_id)
+			},
+			userPlayer() {
+				if(this.connection.user && this.connection.user.player_id) {
+					return this.players[this.connection.user.player_id] || null
+				}
+				return null
 			}
 		},
 		data() {
-			return {}
+			return {
+				debug: false
+			}
+		},
+		methods: {
+			toggleDebug() {
+				this.debug = !this.debug
+			}
 		},
 		mixins: [pageMixin],
 		sync: {

@@ -37,6 +37,10 @@ export default {
 				})
 			}
 		})
+		
+		socket.on('user', user => {
+			this.connection.user = user
+		})
 
 		socket.on('connect_error', reason => {
 			this.connection.connected = false

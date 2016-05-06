@@ -15,6 +15,11 @@ $button-primary-color: material-color('blue-grey', '500');
 		background-color: material-color('blue-grey', '600');
 	}
 	
+	&:disabled {
+		background-color: material-color('grey', '400');
+		cursor: default;
+	}
+	
 	&:active:not(:disabled) {
 		border-bottom-width: 1px;
 		border-top-width: 7px;
@@ -32,11 +37,6 @@ $button-primary-color: material-color('blue-grey', '500');
 		
 		&:hover {
 			background-color: material-color('orange', '500');			
-		}
-		
-		&:disabled {
-			background-color: material-color('grey', '400');
-			cursor: default;
 		}
 	}
 }

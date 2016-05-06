@@ -17,6 +17,12 @@ export default {
 			System.import('./routes/CreateGame.vue').then(resolve)
 		}
 	},
+	'join/:join_code': {
+		name: 'join-game',
+		component(resolve) {
+			System.import('./routes/JoinGame.vue').then(resolve)
+		}
+	},
 	'login': {
 		name: 'login',
 		component(resolve) {

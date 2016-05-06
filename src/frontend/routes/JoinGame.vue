@@ -2,11 +2,10 @@
 	<div class="layout__centered-wrapper">
 		<div class="layout__centered create-room">
 			<div v-if="!errors">
-				Creating Room...
+				Joining Room...
 			</div>
 			<errors v-if="errors" :errors="errors"></errors>
 			<div class="create-room__actions" v-if="errors">
-				<a @click.prevent="createRoom()">Try Again</a>
 				<a v-link="{name: 'home'}">Home</a>
 			</div>
 		</div>
@@ -20,7 +19,7 @@
 	export default {
 		mixins: [PageMixin],
 		components: {
-			Errors,
+			Errors
 		},
 		data() {
 			return {
@@ -28,13 +27,17 @@
 			}
 		},
 		methods: {
-			createRoom() {
+			joinRoom() {
 				this.errors = null
-				this.$service('api/rooms').create({}).then(room => {
+				this.$service('api/players').create({}, {
+					query: {
+						join_code: this.$route.params.join_code
+					}
+				}).then(player => {
 					this.$route.router.go({
 						name: 'room',
 						params: {
-							room_id: room.id
+							room_id: player.room_id
 						},
 						replace: true
 					})
@@ -44,7 +47,7 @@
 			}
 		},
 		ready() {
-			this.createRoom()
+			this.joinRoom()
 		},
 		route: {
 			activate(transition) {
@@ -59,5 +62,6 @@
 				return Promise.resolve()
 			}
 		}
+
 	}
 </script>

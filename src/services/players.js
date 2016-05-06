@@ -1,4 +1,5 @@
 import Bluebird from 'bluebird'
+import errors from 'feathers-errors'
 import service from 'feathers-knex'
 
 import knex from '../database'
@@ -21,13 +22,14 @@ function checkIfNextRoomOwnerIsNeeded() {
 		}
 
 		// Choose another player
-		const newOwner = app.service('api/players').find({
+		const newOwner = await app.service('api/players').find({
 			query: {
 				room_id: room.id,
 				$limit: 1
 			}
 		})
 
+		console.log(newOwner)
 		if (newOwner.length) {
 			await app.service('api/rooms').patch(room.id, {
 				owner_player_id: newOwner[0].id
@@ -49,10 +51,29 @@ function checkIfNextRoomOwnerIsNeeded() {
 	}
 }
 
+function ensureRoomNotFull() {
+	return async (hook) => {
+		const roomID = hook.data.room_id
+
+		const [players, limitsSetting] = await Promise.all([
+			hook.app.service('api/players').find({
+				query: {
+					room_id: roomID
+				}
+			}),
+			hook.app.service('api/settings').get('limits')
+		])
+
+		if (players.length >= limitsSetting.value.players) {
+			throw new errors.NotAcceptable('Too many players already in the lobby')
+		}
+	}
+}
+
 function findRoomByCode() {
 	return async (hook) => {
 		if (!hook.params.query.join_code) {
-			throw new Error('Missing join code')
+			throw new errors.BadRequest('Missing join code')
 		}
 
 		const joinCode = hook.params.query.join_code
@@ -66,7 +87,7 @@ function findRoomByCode() {
 		})
 
 		if (!room.length) {
-			throw new Error('Unknown room')
+			throw new errors.NotFound('Unknown room')
 		}
 
 		hook.data.room_id = room[0].id
@@ -76,7 +97,7 @@ function findRoomByCode() {
 function mustNotBeInARoom() {
 	return hook => {
 		if (hook.params.user.player_id) {
-			throw new Error('You are already playing in a game. Leave it first')
+			throw new errors.Forbidden('You are already playing in a game. Leave it first')
 		}
 	}
 }
@@ -105,6 +126,7 @@ export default function () {
 			mustNotBeInARoom(),
 			pluck(''),
 			findRoomByCode(),
+			ensureRoomNotFull(),
 			setSummoner(),
 			updateTimestamps()
 		],

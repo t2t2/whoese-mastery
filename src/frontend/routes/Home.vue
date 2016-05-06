@@ -28,7 +28,7 @@
 				<i class="material-icons">people_outline</i>
 				<span class="home__players_info">2 players required</span>
 				<span class="home__players_info">3+ recommended</span>
-				<span class="home__players_info">Up to <span class="tag is-danger">TODO</span></span>
+				<span class="home__players_info">Up to {{ settings.limits.value.players }}</span>
 			</div>
 		</div>
 	</div>

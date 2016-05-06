@@ -1,15 +1,21 @@
 import _ from 'lodash'
-import service from 'feathers-knex'
+import errors from 'feathers-errors'
 import randomstring from 'randomstring'
+import service from 'feathers-knex'
 
 import knex from '../database'
-import {disable, updateTimestamps, pluck, populateUser, restrictToAuthenticated, verifyToken} from '../hooks'
+import {disable, updateTimestamps, pluck, populateUser, remove, removeIndividually, restrictToAuthenticated, verifyToken} from '../hooks'
 
 function addPlayerAsRoomOwner() {
 	return async (hook) => {
+		if (!hook.params.provider) {
+			return
+		}
+
 		const createPlayerParams = _.assign({}, hook.params, {
 			query: {
-				join_code: hook.result.join_code
+				// join_code is removed in .get, .create is internally calling .get so it get's sniped away
+				join_code: hook.data.join_code
 			}
 		})
 
@@ -57,8 +63,8 @@ function generateRoomCode() {
 
 function mustNotBeInARoom() {
 	return hook => {
-		if (hook.params.user.player_id) {
-			throw new Error('You are already playing in a game. Leave it first')
+		if (hook.params.provider && hook.params.user.player_id) {
+			throw new errors.Forbidden('You are already playing in a game. Leave it first')
 		}
 	}
 }
@@ -89,6 +95,11 @@ export default function () {
 	})
 
 	roomsService.after({
+		all: [
+			removeIndividually('join_code', (hook, room) => {
+				return hook.method !== 'create' && !!hook.params.provider && (!hook.params.user || !hook.params.user.player_id || hook.params.user.player.room_id !== room.id)
+			})
+		],
 		create: [
 			addPlayerAsRoomOwner()
 		]
