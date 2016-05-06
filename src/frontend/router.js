@@ -23,6 +23,12 @@ export default {
 			System.import('./routes/Login.vue').then(resolve)
 		}
 	},
+	'room/:room_id': {
+		name: 'room',
+		component(resolve) {
+			System.import('./routes/Room.vue').then(resolve)			
+		}
+	},
 	'*': {
 		name: '404',
 		component(resolve) {

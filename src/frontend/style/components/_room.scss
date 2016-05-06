@@ -1,0 +1,22 @@
+.room__wrapper {
+	align-items: center;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.room__donezo {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	line-height: 3rem;
+	max-width: 20rem;
+}
+
+.room {
+	display: flex;
+	flex-grow: 1;
+	width: 100%;
+	
+}

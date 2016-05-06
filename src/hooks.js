@@ -1,7 +1,7 @@
 import auth from 'feathers-authentication'
 
 export var {
-	populateUser, verifyToken
+	populateUser, restrictToAuthenticated, verifyToken
 } = auth.hooks
 
 export {

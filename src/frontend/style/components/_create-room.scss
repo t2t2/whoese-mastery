@@ -1,0 +1,10 @@
+.create-room {
+	max-width: 40rem;
+	
+	&__actions {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		line-height: 2;
+	}
+}
