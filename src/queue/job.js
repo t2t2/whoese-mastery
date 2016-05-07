@@ -31,7 +31,7 @@ export default class Job {
 		return this.deleted || this.released
 	}
 
-	async delete() {
+	async del() {
 		if (this.handled()) {
 			return
 		}

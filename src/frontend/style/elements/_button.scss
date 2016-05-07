@@ -8,6 +8,7 @@ $button-primary-color: material-color('blue-grey', '500');
 	border-width: 3px 3px 5px;
 	border-radius: 0 0 5px 5px;
 	color: material-color('blue-grey', '50');
+	vertical-align: bottom;
 	
 	transition: background 0.2s;
 	
@@ -23,6 +24,14 @@ $button-primary-color: material-color('blue-grey', '500');
 	&:active:not(:disabled) {
 		border-bottom-width: 1px;
 		border-top-width: 7px;
+	}
+	
+	&--primary {
+		background-color: material-color('orange', '400');
+		color: material-color('orange', '50');
+		&:hover {
+			background-color: material-color('orange', '500');			
+		}
 	}
 	
 	&--main {

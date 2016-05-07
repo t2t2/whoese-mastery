@@ -1,3 +1,4 @@
+import ChampionMasteryModule from './modules/champion-mastery'
 import StaticDataModule from './modules/static-data'
 import SummonerModule from './modules/summoner'
 
@@ -12,6 +13,7 @@ export default class LeagueAPICore {
 		this.errors = errors
 		this.utils = new Utils(this, limits)
 
+		this.championMastery = new ChampionMasteryModule(this)
 		this.static = new StaticDataModule(this)
 		this.summoner = new SummonerModule(this)
 	}

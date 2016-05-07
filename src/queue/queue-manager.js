@@ -25,8 +25,11 @@ export default class QueueManager {
 		this.jobs = {}
 		this.working = 0
 		this.maxWorking = 1 // Can be increased once confident
-		this.passiveListenerFrequency = moment.duration(30, 'seconds')
+		this.passiveListenerFrequency = moment.duration(1, 'minute')
 		this.passiveListenerInterval = null
+
+		this.activeListenerNext = null
+		this.activeListenerTimeout = null
 
 		// Register job listener once server is set up
 		const queue = this
@@ -35,6 +38,7 @@ export default class QueueManager {
 			let result = _super.apply(this, arguments)
 
 			queue.registerListener()
+			queue.registerActiveListener()
 
 			return result
 		}
@@ -106,6 +110,71 @@ export default class QueueManager {
 	}
 
 	/**
+	 * Listen for create/patch events to adjust the active listener
+	 */
+	registerActiveListener() {
+		this.service.on('created', job => {
+			const when = moment(job.available_at)
+			this.checkIfActiveListenerShouldBeCalledEarlier(when)
+		})
+		this.service.on('updated', job => {
+			const when = moment(job.available_at)
+			this.checkIfActiveListenerShouldBeCalledEarlier(when)
+		})
+		this.service.on('patched', job => {
+			const when = moment(job.available_at)
+			this.checkIfActiveListenerShouldBeCalledEarlier(when)
+		})
+	}
+
+	/**
+	 * Checks when next active listener should be fired
+	 */
+	checkIfActiveListenerShouldBeCalledEarlier(when) {
+		if (when.isBefore()) {
+			// Fire active listener now
+			return this.doNextJob()
+		} else {
+			if ((!this.activeListenerNext || when.isBefore(this.activeListenerNext)) // No active listener or is before the next one
+				&& when.diff() < this.passiveListenerFrequency.asMilliseconds() // Is before next passive listener
+			) {
+				this.setActiveListenerTimeout(when)
+			}
+		}
+	}
+
+	/**
+	 * Set up active listener timeout that should fire when it's roguhly time to do the job 
+	 */
+	setActiveListenerTimeout(when) {
+		if (this.activeListenerTimeout) {
+			this.clearActiveListener()
+		}
+
+		debug(`Setting next listener for in ${when.diff()}ms`)
+
+		this.activeListenerTimeout = setTimeout(() => {
+			this.activeListenerTimeout = null
+			this.activeListenerNext = null
+			this.doNextJob()
+		}, Math.max(when.diff() + 1, 1))
+		this.activeListenerNext = when
+	}
+
+	/**
+	 * Clear any previous active timeout listeners
+	 */
+	clearActiveListener() {
+		if (this.activeListenerTimeout) {
+			clearTimeout(this.activeListenerTimeout)
+			this.activeListenerTimeout = null
+		}
+		if (this.activeListenerNext) {
+			this.activeListenerNext = null
+		}
+	}
+
+	/**
 	 * Do next job that can be done
 	 */
 	async doNextJob() {
@@ -121,7 +190,30 @@ export default class QueueManager {
 		}
 
 		if (gotWork) {
-			// TODO: Allow more than 1 job at a time
+			// Allow more than 1 job at a time
+			return this.doNextJob()
+		} else if (this.working === 0) {
+			// Check when next active listener should fire
+			return this.getNextAvailableTime()
+		}
+	}
+
+	/**
+	 * Get next available time and tell it to active listener
+	 */
+	async getNextAvailableTime() {
+		const job = await this.service.find({
+			query: {
+				$limit: 1,
+				$select: ['available_at'],
+				$sort: {
+					available_at: 1
+				}
+			}
+		})
+		if(job.length) {
+			const when = moment(job[0].available_at)
+			return this.checkIfActiveListenerShouldBeCalledEarlier(when)
 		}
 	}
 
@@ -214,7 +306,7 @@ export default class QueueManager {
 		try {
 			await jobWorker.handle.call(this.app, job)
 		} catch (e) {
-			job.release(moment.duration(10, 'seconds'))
+			job.release(jobWorker.retry ? jobWorker.retry : moment.duration(10, 'seconds'))
 			throw e
 		}
 
@@ -226,7 +318,7 @@ export default class QueueManager {
 				await this.repeatJob(job, jobWorker.repeating)
 			} else {
 				debug('Removing done job', job.id)
-				await job.delete()
+				await job.del()
 			}
 		}
 	}

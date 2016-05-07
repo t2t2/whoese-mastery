@@ -4,10 +4,10 @@ import randomstring from 'randomstring'
 import service from 'feathers-knex'
 
 import knex from '../database'
-import {disable, updateTimestamps, pluck, populateUser, removeIndividually, restrictToAuthenticated, verifyToken} from '../hooks'
+import {disable, updateTimestamps, pluck, pluckQuery, populateUser, removeIndividually, restrictToAuthenticated, userMustBeRoomOwner, verifyToken} from '../hooks'
 
 function addPlayerAsRoomOwner() {
-	return async (hook) => {
+	return async function (hook) {
 		if (!hook.params.provider) {
 			return
 		}
@@ -55,28 +55,80 @@ function generateRoomCode() {
 		return code
 	}
 
-	return async (hook) => {
+	return async function (hook) {
 		const code = await getRandomCode(hook)
 		hook.data.join_code = code // eslint-disable-line camelcase
 		return hook
 	}
 }
 
+function flagUserPatchRequests() {
+	return function (hook) {
+		if (!hook.params.provider) {
+			return
+		}
+
+		hook.changing = {}
+		if (hook.data.state) {
+			switch (hook.data.state) {
+				case 'loading': {
+					if (hook.room.state !== 'lobby') {
+						throw new errors.Forbidden('Room has already been started')
+					}
+					hook.changing.state = 'loading'
+					break;
+				}
+				default: {
+					throw new errors.Forbidden('Invalid request')
+				}
+			}
+		}
+		return hook
+	}
+}
+
+function handleFlaggedRequests() {
+	return async function (hook) {
+		if(hook.changing) {
+			if(hook.changing.state) {
+				await hook.app.queue.push('createGameRounds', {
+					roomID: hook.result.id
+				})
+			}
+		}
+	}
+}
+
 function mustNotBeInARoom() {
-	return hook => {
+	return function (hook) {
 		if (hook.params.provider && hook.params.user.player_id) {
 			throw new errors.Forbidden('You are already playing in a game. Leave it first')
 		}
 	}
 }
 
+function setRoomDefaults() {
+	return hook => {
+		hook.data.state = 'lobby'
+
+		return hook
+	}
+}
+
 export default function () {
 	const app = this
 
-	app.service('api/rooms', service({
+	const serviceInstance = service({
 		Model: knex,
 		name: 'rooms'
-	}))
+	})
+	// Add custom events we want to broadcast
+	if (!serviceInstance.events) {
+		serviceInstance.events = []
+	}
+	serviceInstance.events.push('loading-progress')
+
+	app.service('api/rooms', serviceInstance)
 
 	const roomsService = app.service('api/rooms')
 
@@ -88,10 +140,20 @@ export default function () {
 			mustNotBeInARoom(),
 			pluck(''), // Need to pluck something
 			generateRoomCode(),
+			setRoomDefaults(),
 			updateTimestamps()
 		],
-		update: [disable('external'), updateTimestamps()],
-		patch: [disable('external'), updateTimestamps()],
+		update: [disable()],
+		patch: [
+			verifyToken(),
+			populateUser(),
+			restrictToAuthenticated(),
+			userMustBeRoomOwner(hook => hook.id),
+			pluckQuery(''),
+			pluck('state'),
+			flagUserPatchRequests(),
+			updateTimestamps()
+		],
 		remove: [disable('external')]
 	})
 
@@ -105,6 +167,9 @@ export default function () {
 		],
 		create: [
 			addPlayerAsRoomOwner()
+		],
+		patch: [
+			handleFlaggedRequests()
 		]
 	})
 }

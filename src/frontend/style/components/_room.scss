@@ -48,13 +48,17 @@
 	
 	&__players {
 		display: flex;
+		flex: 1;
 		flex-direction: column;
 		max-width: 70rem;
 		margin-top: 1rem;
 		width: 100%;
 		
 		@include tablet {
+			align-content: space-around;
+			align-items: center;
 			flex-direction: row;
+			flex-wrap: wrap;
 		}
 	}
 	&__player {
@@ -87,5 +91,19 @@
 		margin-top: 0.5rem;
 		padding: 0.5rem;
 		width: 100%;
+	}
+}
+
+.room-loading {
+	justify-content: space-around;
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	
+	&__content {
+		width: 100%;
+		max-width: 30rem;
+		text-align: center;
 	}
 }

@@ -2,3 +2,28 @@
 @import "vue/vue_mui";
 
 @include vue-mui-transitions;
+
+.slide-timeline-fade {
+	$slide-in: slide(in, left);
+	$slide-out: slide(in, right);
+	
+	&-transition {
+		@include transition-basics();
+		@include -mui-keyframe-get($slide-in, 100);
+		transition-property: transform, opacity;
+		opacity: 1;
+		backface-visibility: hidden;
+	}
+
+	&-enter, &-leave {
+		opacity: 0;
+	}
+	
+	&-enter {
+		@include -mui-keyframe-get($slide-in, 0);
+	}
+
+	&-leave {
+		@include -mui-keyframe-get($slide-out, 0);
+	}
+}

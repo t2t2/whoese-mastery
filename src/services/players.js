@@ -3,7 +3,7 @@ import errors from 'feathers-errors'
 import service from 'feathers-knex'
 
 import knex from '../database'
-import {disable, pluck, populate, populateUser, restrictToAuthenticated, verifyToken, updateTimestamps} from '../hooks'
+import {disable, map, mapSeries, pluck, populate, populateUser, restrictToAuthenticated, verifyToken, updateTimestamps} from '../hooks'
 
 function assignPlayerToSession() {
 	return async (hook) => {
@@ -14,7 +14,8 @@ function assignPlayerToSession() {
 }
 
 function checkIfNextRoomOwnerIsNeeded() {
-	async function checkRoomForUpdate(player, app) {
+	async function checkRoomForUpdate(hook, player) {
+		const app = hook.app
 		const room = await app.service('api/rooms').get(player.room_id)
 
 		if (room.owner_player_id !== player.id) {
@@ -29,7 +30,6 @@ function checkIfNextRoomOwnerIsNeeded() {
 			}
 		})
 
-		console.log(newOwner)
 		if (newOwner.length) {
 			await app.service('api/rooms').patch(room.id, {
 				owner_player_id: newOwner[0].id // eslint-disable-line camelcase
@@ -40,14 +40,7 @@ function checkIfNextRoomOwnerIsNeeded() {
 		}
 	}
 
-	return async (hook) => {
-		if (Array.isArray(hook.result)) {
-			return Bluebird.mapSeries(hook.result, (session) => {
-				return checkRoomForUpdate(session, hook.app)
-			})
-		}
-		return checkRoomForUpdate(hook.result, hook.app)
-	}
+	return mapSeries(checkRoomForUpdate)
 }
 
 function ensureRoomNotFull() {
@@ -89,7 +82,23 @@ function findRoomByCode() {
 			throw new errors.NotFound('Unknown room')
 		}
 
+		if (room[0].state !== 'lobby') {
+			throw new errors.Forbidden('Game is already going on')
+		}
+
 		hook.data.room_id = room[0].id // eslint-disable-line camelcase
+	}
+}
+
+function mustBeSelf() {
+	return hook => {
+		if (!hook.params.provider) {
+			return
+		}
+
+		if (!hook.params.user.player_id || hook.params.user.player_id !== hook.id) {
+			throw new errors.Forbidden('Invalid player')
+		}
 	}
 }
 
@@ -99,6 +108,35 @@ function mustNotBeInARoom() {
 			throw new errors.Forbidden('You are already playing in a game. Leave it first')
 		}
 	}
+}
+
+function removeFromSessions() {
+	async function sendSessionsPatch(hook, player) {
+		const app = hook.app
+
+		// There /might/ be a bug in feathers-knex where patching all values that match a query won't push out the updates, so for saftey patch by IDs
+		const sessions = await app.service('api/sessions').find({
+			query: {
+				player_id: player.id
+			}
+		})
+
+		if(sessions.length) {
+			const IDs = sessions.map(session => session.id)
+			
+			await app.service('api/sessions').patch(null, {
+				player_id: null,
+			}, {
+				query: {
+					id: {
+						$in: IDs
+					}
+				}
+			})
+		}
+	}
+
+	return map(sendSessionsPatch)
 }
 
 function setSummoner() {
@@ -131,7 +169,13 @@ export default function () {
 		],
 		update: [disable('external'), updateTimestamps()],
 		patch: [disable('external'), updateTimestamps()],
-		remove: [disable('external')]
+		remove: [
+			verifyToken(),
+			populateUser(),
+			restrictToAuthenticated(),
+			mustBeSelf(),
+
+		]
 	})
 
 	playersService.after({
@@ -142,6 +186,6 @@ export default function () {
 			})
 		],
 		create: [assignPlayerToSession()],
-		remove: [checkIfNextRoomOwnerIsNeeded()]
+		remove: [removeFromSessions(), checkIfNextRoomOwnerIsNeeded()]
 	})
 }

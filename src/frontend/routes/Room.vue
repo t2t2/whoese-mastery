@@ -5,14 +5,17 @@
 			<a v-link="{name: 'home'}">Go home</a>
 		</div>
 		<div class="room" v-if="!$loadingSyncers && room">
-			<lobby
+			<component
+				:is="currentView"
+				transition="slide-timeline-fade"
+				transition-mode="out-in"
 				:is-owner="isOwner"
 				:players="players"
 				:room="room"
 				:settings="settings"
 				:user-player="userPlayer">
-			</lobby>
-			<button @click="debug = !debug">Debug</button>
+			</component>
+			<button @click="debug = !debug">Debug ({{ room.state }})</button>
 			<div v-if="debug">
 				<pre v-text="room | json"></pre>
 				<pre v-text="players | json"></pre>
@@ -25,15 +28,30 @@
 <script>
 	import toNumber from 'lodash/toNumber'
 	
-	import Lobby from '../room/Lobby.vue'
+	import RoomLoading from '../room/Loading.vue'
+	import RoomLobby from '../room/Lobby.vue'
 	
 	import pageMixin from '../mixins/page'
 
 	export default {
 		components: {
-			Lobby
+			RoomLoading,
+			RoomLobby
 		},
 		computed: {
+			currentView() {
+				if(this.room) {
+					switch(this.room.state) {
+						case 'lobby': {
+							return 'room-lobby'
+						}
+						case 'loading': {
+							return 'room-loading'
+						}
+					}
+				}
+				return
+			},
 			isOwner() {
 				if(this.userPlayer && this.room) {
 					return this.userPlayer.id === this.room.owner_player_id

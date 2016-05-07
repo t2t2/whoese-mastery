@@ -1,4 +1,5 @@
 import auth from 'feathers-authentication'
+import Bluebird from 'bluebird'
 
 export var {
 	populateUser, restrictToAuthenticated, verifyToken
@@ -9,6 +10,57 @@ disable, remove, removeQuery, pluck, pluckQuery
 } from 'feathers-hooks'
 
 import errors from 'feathers-errors'
+
+// Mapping over data or result
+export function map(callback) {
+	return async function (hook) {
+		let data
+
+		if (hook.type === 'before') {
+			data = hook.data
+		} else {
+			const isPaginated = (hook.method === 'find' && hook.result.data)
+			data = isPaginated ? hook.result.data : hook.result
+		}
+
+		if (data) {
+			if (Array.isArray(data)) {
+				// array
+				await Promise.all(data.map(callback.bind(this, hook)))
+			} else {
+				// one thing
+				await callback.call(this, hook, data)
+			}
+		}
+
+		return hook
+	}
+}
+
+export function mapSeries(callback) {
+	return async function (hook) {
+		let data
+
+		if (hook.type === 'before') {
+			data = hook.data
+		} else {
+			const isPaginated = (hook.method === 'find' && hook.result.data)
+			data = isPaginated ? hook.result.data : hook.result
+		}
+
+		if (data) {
+			if (Array.isArray(data)) {
+				// array
+				await Bluebird.mapSeries(data.map(callback.bind(this, hook)))
+			} else {
+				// one thing
+				await callback.call(this, hook, data)
+			}
+		}
+
+		return hook
+	}
+}
 
 // Taken from feathers-hooks, fixed to remove query
 export function populate(target, options) {
@@ -81,9 +133,8 @@ export function populate(target, options) {
 export function removeIndividually(...fields) {
 	const callback = typeof fields[fields.length - 1] === 'function' ? fields.pop() : (hook) => Boolean(hook.params.provider)
 
-	const removeFields = (hook, data) => {
-		if (callback(hook, data)) {
-			console.log('removing')
+	const removeFields = function (hook, data) {
+		if (callback.call(this, hook, data)) {
 			for (let field of fields) {
 				data[field] = undefined
 				delete data[field]
@@ -91,28 +142,7 @@ export function removeIndividually(...fields) {
 		}
 	}
 
-	return function (hook) {
-		const result = hook.type === 'before' ? hook.data : hook.result
-
-		if (result) {
-			if (Array.isArray(result)) {
-				// array
-				result.forEach(removeFields.bind(this, hook))
-			} else if (result.data) {
-				// paginated
-				if (Array.isArray(result.data)) {
-					result.data.forEach(removeFields.bind(this, hook))
-				} else {
-					removeFields(hook, result.data)
-				}
-			} else {
-				// one thing
-				removeFields(hook, result)
-			}
-		}
-
-		return hook
-	}
+	return map(removeFields)
 }
 
 export function updateTimestamps() {
@@ -122,6 +152,26 @@ export function updateTimestamps() {
 		}
 
 		hook.data.updated_at = new Date() // eslint-disable-line camelcase
+	}
+}
+
+export function userMustBeRoomOwner(roomIDGetter) {
+	return async function (hook) {
+		if (!hook.params.provider) {
+			return
+		}
+
+		const roomID = await roomIDGetter(hook)
+
+		if (!roomID) {
+			throw new errors.MethodNotAllowed('Requires target ID')
+		}
+
+		const room = hook.room = await hook.app.service('api/rooms').get(roomID)
+
+		if (room.owner_player_id !== hook.params.user.player_id) {
+			throw new errors.Forbidden('You are not the room owner')
+		}
 	}
 }
 
