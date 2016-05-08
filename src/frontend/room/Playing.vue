@@ -56,10 +56,14 @@
 		mixins: [roomMixin],
 		watch: {
 			'room.current_round_id': {
-				handler(newVal) {
+				handler(newVal, oldVal) {
 					// For smoother transitions
 					if(this.$transitionTimeout) {
 						clearTimeout(this.$transitionTimeout)
+					}
+					if(!oldVal) {
+						this.currentRoundId = newVal
+						return
 					}
 					this.currentRoundId = null
 					this.$transitionTimeout = setTimeout(() => {

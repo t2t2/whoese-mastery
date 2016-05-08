@@ -16,7 +16,7 @@
 			:players="players"
 			:round="round"
 			:settings="settings"
-			:userPlayer="userPlayer">
+			:user-player="userPlayer">
 		</component>
 		<pre style="font-size: 0.5em;">{{ round | json }}</pre>
 	</div>

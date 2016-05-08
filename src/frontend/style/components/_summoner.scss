@@ -7,12 +7,16 @@
 		margin-right: 0.5rem;
 		width: 1.5em;
 	}
+	&__name {
+		line-height: 1em;
+	}
 	&__region {
 		color: material-color('amber', '100');
 	}
 	
 	&--inline {
 		display: inline-flex;
+		vertical-align: bottom;
 	}
 	
 	@include tablet {
