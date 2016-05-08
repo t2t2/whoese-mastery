@@ -1,0 +1,17 @@
+.champion {
+	align-items: center;
+	display: flex;
+	
+	&__image {
+		height: 1em;
+		margin-right: 0.5rem;
+		width: 1em;
+	}
+	&__region {
+		color: material-color('amber', '100');
+	}
+	&--inline {
+		display: inline-flex;
+		vertical-align: bottom;
+	}
+}

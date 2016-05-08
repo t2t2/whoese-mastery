@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import errors from 'feathers-errors'
 import service from 'feathers-knex'
 
@@ -117,22 +116,23 @@ function removeFromSessions() {
 		// There /might/ be a bug in feathers-knex where patching all values that match a query won't push out the updates, so for saftey patch by IDs
 		const sessions = await app.service('api/sessions').find({
 			query: {
-				player_id: player.id
+				player_id: player.id // eslint-disable-line camelcase
 			}
 		})
 
-		if(sessions.length) {
+		if (sessions.length) {
 			const IDs = sessions.map(session => session.id)
-			
-			await app.service('api/sessions').patch(null, {
-				player_id: null,
-			}, {
-				query: {
-					id: {
-						$in: IDs
+
+			await app.service('api/sessions').patch(null,
+				{
+					player_id: null // eslint-disable-line camelcase
+				}, {
+					query: {
+						id: {
+							$in: IDs
+						}
 					}
-				}
-			})
+				})
 		}
 	}
 
@@ -142,6 +142,7 @@ function removeFromSessions() {
 function setSummoner() {
 	return (hook) => {
 		hook.data.summoner_id = hook.params.user.summoner_id // eslint-disable-line camelcase
+		hook.data.score = 0
 	}
 }
 
@@ -173,8 +174,7 @@ export default function () {
 			verifyToken(),
 			populateUser(),
 			restrictToAuthenticated(),
-			mustBeSelf(),
-
+			mustBeSelf()
 		]
 	})
 

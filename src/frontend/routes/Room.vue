@@ -9,9 +9,12 @@
 				:is="currentView"
 				transition="slide-timeline-fade"
 				transition-mode="out-in"
+				:champions="champions"
+				:connection="connection"
 				:is-owner="isOwner"
 				:players="players"
 				:room="room"
+				:rounds="rounds"
 				:settings="settings"
 				:user-player="userPlayer">
 			</component>
@@ -28,15 +31,19 @@
 <script>
 	import toNumber from 'lodash/toNumber'
 	
+	import RoomFinished from '../room/Finished.vue'
 	import RoomLoading from '../room/Loading.vue'
 	import RoomLobby from '../room/Lobby.vue'
+	import RoomPlaying from '../room/Playing.vue'
 	
 	import pageMixin from '../mixins/page'
 
 	export default {
 		components: {
+			RoomFinished,
 			RoomLoading,
-			RoomLobby
+			RoomLobby,
+			RoomPlaying
 		},
 		computed: {
 			currentView() {
@@ -47,6 +54,12 @@
 						}
 						case 'loading': {
 							return 'room-loading'
+						}
+						case 'playing': {
+							return 'room-playing'
+						}
+						case 'finished': {
+							return 'room-finished'
 						}
 					}
 				}
@@ -80,6 +93,7 @@
 		},
 		mixins: [pageMixin],
 		sync: {
+			champions: 'api/champions',
 			room: {
 				service: 'api/rooms',
 				id() {
@@ -88,6 +102,14 @@
 			},
 			players: {
 				service: 'api/players',
+				query() {
+					return {
+						room_id: this.roomID
+					}
+				}
+			},
+			rounds: {
+				service: 'api/rounds',
 				query() {
 					return {
 						room_id: this.roomID

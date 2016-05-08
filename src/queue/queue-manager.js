@@ -134,17 +134,16 @@ export default class QueueManager {
 		if (when.isBefore()) {
 			// Fire active listener now
 			return this.doNextJob()
-		} else {
-			if ((!this.activeListenerNext || when.isBefore(this.activeListenerNext)) // No active listener or is before the next one
-				&& when.diff() < this.passiveListenerFrequency.asMilliseconds() // Is before next passive listener
-			) {
-				this.setActiveListenerTimeout(when)
-			}
+		}
+		if ((!this.activeListenerNext || when.isBefore(this.activeListenerNext)) && // No active listener or is before the next one
+			when.diff() < this.passiveListenerFrequency.asMilliseconds() // Is before next passive listener
+		) {
+			this.setActiveListenerTimeout(when)
 		}
 	}
 
 	/**
-	 * Set up active listener timeout that should fire when it's roguhly time to do the job 
+	 * Set up active listener timeout that should fire when it's roguhly time to do the job
 	 */
 	setActiveListenerTimeout(when) {
 		if (this.activeListenerTimeout) {
@@ -204,14 +203,15 @@ export default class QueueManager {
 	async getNextAvailableTime() {
 		const job = await this.service.find({
 			query: {
+				reserved: false,
 				$limit: 1,
 				$select: ['available_at'],
 				$sort: {
-					available_at: 1
+					available_at: 1 // eslint-disable-line camelcase
 				}
 			}
 		})
-		if(job.length) {
+		if (job.length) {
 			const when = moment(job[0].available_at)
 			return this.checkIfActiveListenerShouldBeCalledEarlier(when)
 		}

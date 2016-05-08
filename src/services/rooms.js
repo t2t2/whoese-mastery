@@ -63,7 +63,7 @@ function generateRoomCode() {
 }
 
 function flagUserPatchRequests() {
-	return function (hook) {
+	return async function (hook) {
 		if (!hook.params.provider) {
 			return
 		}
@@ -75,8 +75,17 @@ function flagUserPatchRequests() {
 					if (hook.room.state !== 'lobby') {
 						throw new errors.Forbidden('Room has already been started')
 					}
+					// Make sure enough players
+					const players = await hook.app.service('api/players').find({
+						query: {
+							room_id: hook.room.id // eslint-disable-line camelcase
+						}
+					})
+					if (players.length < 2) {
+						throw new errors.Forbidden('Not enough players')
+					}
 					hook.changing.state = 'loading'
-					break;
+					break
 				}
 				default: {
 					throw new errors.Forbidden('Invalid request')
@@ -89,8 +98,8 @@ function flagUserPatchRequests() {
 
 function handleFlaggedRequests() {
 	return async function (hook) {
-		if(hook.changing) {
-			if(hook.changing.state) {
+		if (hook.changing) {
+			if (hook.changing.state) {
 				await hook.app.queue.push('createGameRounds', {
 					roomID: hook.result.id
 				})

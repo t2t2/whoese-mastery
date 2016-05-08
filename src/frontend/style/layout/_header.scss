@@ -40,6 +40,15 @@
 	}
 }
 
+.header-item.summoner .summoner__image {
+	width: 30px;
+	height: 30px;
+	
+	img {
+		max-height: 30px;
+	}
+}
+
 .hamburger {
 	&:hover {
 		background-color: material-color('blue-grey', '900');

@@ -10,10 +10,13 @@
 @import 'elements/progress';
 @import 'elements/title';
 
+@import 'components/champion';
 @import 'components/connection';
 @import 'components/create-room';
 @import 'components/home';
 @import 'components/login';
 @import 'components/missing-page';
-@import 'components/summoner';
+@import 'components/players';
 @import 'components/room';
+@import 'components/round';
+@import 'components/summoner';

@@ -145,14 +145,33 @@ export function removeIndividually(...fields) {
 	return map(removeFields)
 }
 
+export function jsonStringifyFields(...fields) {
+	return map(function (hooks, item) {
+		fields.forEach(field => {
+			item[field] = JSON.stringify(item[field])
+		})
+	})
+}
+
+export function jsonParseFields(...fields) {
+	return map(function (hooks, item) {
+		fields.forEach(field => {
+			if (typeof item[field] === 'string') {
+				item[field] = JSON.parse(item[field])
+			}
+		})
+	})
+}
+
 export function updateTimestamps() {
-	return function (hook) {
+	return map(function (hook, item) {
 		if (hook.method === 'create') {
-			hook.data.created_at = new Date() // eslint-disable-line camelcase
+			item.created_at = new Date() // eslint-disable-line camelcase
 		}
 
-		hook.data.updated_at = new Date() // eslint-disable-line camelcase
-	}
+		item.updated_at = new Date() // eslint-disable-line camelcase
+		return hook
+	})
 }
 
 export function userMustBeRoomOwner(roomIDGetter) {

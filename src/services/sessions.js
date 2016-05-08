@@ -1,4 +1,3 @@
-import Bluebird from 'bluebird'
 import service from 'feathers-knex'
 
 import knex from '../database'
@@ -16,25 +15,17 @@ function isAboutSelf(data, connection) {
 function removePlayerIfPossible() {
 	async function checkPlayerForRemoval(hook, session) {
 		const player = await hook.app.service('api/players').get(session.player_id)
-		// const room = await hook.app.service('api/rooms').get(player.room_id)
+		const room = await hook.app.service('api/rooms').get(player.room_id)
 
-		// TODO: Only if room isn't playing
+		if (room.state !== 'lobby') {
+			return
+		}
 
 		// Remove player
 		await hook.app.service('api/players').remove(player.id)
 	}
 
 	return mapSeries(checkPlayerForRemoval)
-	/*
-	return async (hook) => {
-		if (Array.isArray(hook.result)) {
-			return Bluebird.mapSeries(hook.result, (session) => {
-				return checkPlayerForRemoval(session.player_id, hook.app)
-			})
-		}
-		return checkPlayerForRemoval(hook.result.player_id, hook.app)
-	}
-	*/
 }
 
 export default function () {

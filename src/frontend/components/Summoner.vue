@@ -1,9 +1,9 @@
 <template>
 	<div class="summoner">
-		<figure class="image summoner__image">
+		<figure v-if="show.indexOf('icon') !== -1" class="image summoner__image">
 			<img :src="icon" />
 		</figure>
-		<div class="summoner__name">
+		<div v-if="show.indexOf('name') !== -1" class="summoner__name">
 			{{name}}
 			<span class="summoner__region" v-text="region"></span>
 		</div>
@@ -15,7 +15,9 @@
 	export default {
 		computed: {
 			icon() {
-				return this.settings.league_versions.value.cdn + '/' + this.settings.league_versions.value.profileicon + '/img/profileicon/' + this.summoner.icon_id + '.png'
+				if(this.settings && this.settings.league_versions) {
+					return this.settings.league_versions.value.cdn + '/' + this.settings.league_versions.value.profileicon + '/img/profileicon/' + this.summoner.icon_id + '.png'
+				}
 			},
 			name() {
 				return this.summoner.name
@@ -25,8 +27,17 @@
 			}
 		},
 		props: {
+			show: {
+				type: Array,
+				default() {
+					return ['icon', 'name']
+				}
+			},
 			settings: Object,
-			summoner: Object
+			summoner: {
+				type: Object,
+				required: true
+			}
 		}
 	}
 </script>

@@ -19,6 +19,6 @@ export async function down(knex) {
 	await knex.schema.table('rooms', table => {
 		table.dropColumn('current_round_id')
 	})
-	
+
 	await knex.schema.dropTable('rounds')
 }

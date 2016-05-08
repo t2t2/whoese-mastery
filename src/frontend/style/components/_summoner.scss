@@ -3,13 +3,16 @@
 	display: flex;
 	
 	&__image {
-		height: 24px;
+		height: 1.5em;
 		margin-right: 0.5rem;
-		width: 24px;
+		width: 1.5em;
 	}
 	&__region {
 		color: material-color('amber', '100');
-		margin-left: 0.5rem;
+	}
+	
+	&--inline {
+		display: inline-flex;
 	}
 	
 	@include tablet {

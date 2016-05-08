@@ -5,7 +5,7 @@ export default {
 		isOwner: Boolean,
 		players: Object,
 		room: null,
-		rounds: Object,
+		round: null,
 		settings: Object,
 		userPlayer: null
 	}
