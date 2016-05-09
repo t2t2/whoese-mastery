@@ -1,9 +1,13 @@
+import path from 'path'
+
 import _ from 'lodash'
 import errors from 'feathers-errors/handler'
+import feathers from 'feathers'
 
 export default function () {
 	const app = this
 
+	app.use(feathers.static(path.resolve(__dirname, '../public')))
 	app.use(historyAPIFallback.bind(app))
 	app.use(errors({
 		html: errorRenderer

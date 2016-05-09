@@ -25,7 +25,7 @@ export default {
 			query() {
 				if (this.round) {
 					return {
-						round_id: this.round.id
+						round_id: this.round.id // eslint-disable-line camelcase
 					}
 				}
 				return null

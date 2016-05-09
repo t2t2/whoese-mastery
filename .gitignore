@@ -13,3 +13,6 @@ src/public/*
 
 # Dev only
 database/database.sqlite
+
+# Built files
+build

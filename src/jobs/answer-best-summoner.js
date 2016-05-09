@@ -31,14 +31,14 @@ export default {
 			app.service('api/settings').get('timings'),
 			app.service('api/players').find({
 				query: {
-					room_id: roomID
+					room_id: roomID // eslint-disable-line camelcase
 				}
 			}).then(players => {
 				return _.keyBy(players, 'id')
 			}),
 			app.service('api/round-answers').find({
 				query: {
-					round_id: roundID
+					round_id: roundID // eslint-disable-line camelcase
 				}
 			})
 		])
@@ -51,11 +51,11 @@ export default {
 		await Promise.all(_.map(answers, answer => {
 			if (answer.answer.player_id === round.answer_info.correct) {
 				const player = players[answer.player_id]
-				if(!player) {
+				if (!player) {
 					console.error('Invalid player answered?', answer.id)
 					return
 				}
-				
+
 				return app.service('api/players').patch(player.id, {
 					score: player.score + 100
 				})

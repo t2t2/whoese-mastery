@@ -6,7 +6,7 @@
 	
 	{% if not dev %}
 	{# Let webpack take the wheel when in dev mode #}
-	<link rel="stylesheet" href="{{ 'stylesheets/app.css' | asset }}" />
+	<link rel="stylesheet" href="{{ '/assets/main.css' | asset }}" />
 	{% endif %}
 	<link href="https://fonts.googleapis.com/css?family=Material+Icons|Lobster|Roboto:400,300" rel="stylesheet" />
 </head>
@@ -18,6 +18,6 @@
 		</noscript>
 	</div>
 	
-	<script src="{{ 'assets/main.js' | asset }}" id="script-entry" data-settings="{{ settings | json }}"></script>
+	<script src="{{ '/assets/main.js' | asset }}" id="script-entry" data-settings="{{ settings | json }}"></script>
 </body>
 </html>

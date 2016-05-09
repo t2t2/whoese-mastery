@@ -54,7 +54,7 @@ export default {
 		await app.service('api/rooms').patch(room.id, {
 			current_round_id: nextRound.id // eslint-disable-line camelcase
 		})
-		
+
 		app.queue.push(_.camelCase('start ' + nextRound.type), {
 			roundID: nextRound.id,
 			roomID: room.id

@@ -39,7 +39,7 @@ export default {
 				query: {
 					room_id: roomID // eslint-disable-line camelcase
 				}
-			}),
+			})
 		])
 
 		if (players.length < 2) {
@@ -50,7 +50,7 @@ export default {
 			// already exists for some reason
 			await app.service('api/rounds').remove(null, {
 				query: {
-					room_id: roomID
+					room_id: roomID // eslint-disable-line camelcase
 				}
 			})
 		}

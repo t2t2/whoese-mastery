@@ -19,7 +19,7 @@ export default function () {
 		patch: [disable('external'), jsonStringifyFields('round_info', 'answer_info'), updateTimestamps()],
 		remove: [disable('external')]
 	})
-	
+
 	roundsService.after({
 		all: [jsonParseFields('round_info', 'answer_info')]
 	})

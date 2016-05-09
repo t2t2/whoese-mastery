@@ -1,12 +1,13 @@
 import path from 'path'
 
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
-// import webpack from 'webpack'
+import ManifestPlugin from 'webpack-manifest-plugin'
+import webpack from 'webpack'
 
 export default function ({
 	prod = false
 } = {}) {
-	const outFolder = prod ? path.resolve(__dirname, './built/public/assets') : path.resolve(__dirname, './src/public/assets')
+	const outFolder = prod ? path.resolve(__dirname, './build/public/assets') : path.resolve(__dirname, './src/public/assets')
 
 	return {
 		entry: {
@@ -57,6 +58,23 @@ export default function ({
 			presets: ['es2015-webpack'],
 			plugins: ['transform-runtime']
 		},
-		plugins: []
+		plugins: prod ?
+			[
+				new ManifestPlugin({
+					basePath: '/assets/',
+					fileName: '../manifest.json'
+				}),
+				new ExtractTextPlugin('[name].[contenthash].css'),
+				new webpack.DefinePlugin({
+					'process.env': {
+						NODE_ENV: '"production"'
+					}
+				}),
+				new webpack.optimize.UglifyJsPlugin({
+					compress: {
+						warnings: false
+					}
+				})
+			] : []
 	}
 }

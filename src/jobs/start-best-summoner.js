@@ -25,14 +25,13 @@ export default {
 			return somethingsWrong('Failed too many times')
 		}
 
-		const [round, timings] = await Promise.all([
-			app.service('api/rounds').get(roundID),
+		const [timings] = await Promise.all([
 			app.service('api/settings').get('timings')
 		])
 
 		await app.service('api/rounds').patch(roundID, {
 			phase: 'question',
-			start_time: moment().toDate()
+			start_time: moment().toDate() // eslint-disable-line camelcase
 		})
 
 		// Next phase timing

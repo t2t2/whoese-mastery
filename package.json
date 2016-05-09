@@ -3,8 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "build": "npm-run-all clean build:server build:prod copy:files",
+    "build:server": "babel --ignore src/frontend --ignore src/public -d ./build ./src -s",
     "build:dev": "webpack -d --progress --color",
     "build:prod": "webpack -p --progress --color --env.prod 1",
+    "clean": "rimraf build/**/*.* src/public/**/*.*",
+    "copy:files": "copyfiles -u 1 src/views/**/*.* build",
     "dev": "npm-run-all dev:nodemon-update-fix --parallel dev:server dev:webpack",
     "dev:nodemon-update-fix": "nodemon -v || true",
     "dev:server": "cross-env NODE_ENV=development NODE_CONFIG='{\\\"dev\\\":true}' nodemon --exec babel-node src/start.js",
@@ -12,7 +16,8 @@
     "lint": "xo",
     "migrate": "knex migrate:latest",
     "migrate:make": "knex migrate:make",
-    "migrate:rollback": "knex migrate:rollback"
+    "migrate:rollback": "knex migrate:rollback",
+    "start": "node ./build/start.js"
   },
   "dependencies": {
     "axios": "^0.11.0",
@@ -28,6 +33,7 @@
     "bulma": "0.0.24",
     "cache-manager": "^2.0.1",
     "config": "^1.20.1",
+    "copyfiles": "^0.2.1",
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "feathers": "^2.0.1",
@@ -44,9 +50,10 @@
     "lodash": "^4.11.1",
     "moment": "^2.13.0",
     "motion-ui": "^1.2.2",
-    "node-sass": "^3.6.0",
+    "node-sass": "^3.7.0",
     "nunjucks": "^2.4.2",
     "randomstring": "^1.1.4",
+    "rimraf": "^2.5.2",
     "sass-loader": "^3.2.0",
     "sass-material-colors": "0.0.5",
     "style-loader": "^0.13.1",
@@ -58,7 +65,7 @@
     "vue-router": "^0.7.13",
     "vue-style-loader": "^1.0.0",
     "vue-syncers-feathers": "^0.2.0",
-    "webpack": "^2.1.0-beta.6",
+    "webpack": "^2.1.0-beta.7",
     "webpack-manifest-plugin": "^1.0.1",
     "yup": "^0.18.2"
   },
@@ -78,6 +85,7 @@
   "xo": {
     "exnext": true,
     "ignores": [
+      "build/**/*.*",
       "src/public/**/*"
     ],
     "semicolon": false,

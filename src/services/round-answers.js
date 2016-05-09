@@ -19,8 +19,8 @@ function notAlreadySubmitted() {
 	return async function (hook) {
 		const existCheck = await this.find({
 			query: {
-				round_id: hook.data.round_id,
-				player_id: hook.data.player_id
+				round_id: hook.data.round_id, // eslint-disable-line camelcase
+				player_id: hook.data.player_id // eslint-disable-line camelcase
 			}
 		})
 

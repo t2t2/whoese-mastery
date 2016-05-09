@@ -6,7 +6,7 @@ import {validate} from '../../hooks'
 const schema = yup.object().shape({
 	answer: yup.object()
 		.shape({
-			player_id: yup.number()
+			player_id: yup.number() // eslint-disable-line camelcase
 				.integer()
 				.required()
 				.test('player-in-room', 'Player is not in the room', function (value) {
@@ -15,7 +15,7 @@ const schema = yup.object().shape({
 					return hook.app.service('api/players').find({
 						query: {
 							id: value,
-							room_id: hook.round.room_id
+							room_id: hook.round.room_id // eslint-disable-line camelcase
 						}
 					}).then(results => {
 						return Boolean(results.length)
@@ -34,5 +34,5 @@ export default async function validateAnswer(hook) {
 	}
 
 	// Validate answer
-	return validator(hook)
+	return await validator(hook)
 }
