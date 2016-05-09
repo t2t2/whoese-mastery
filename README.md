@@ -10,7 +10,7 @@ The more you play with friends, the more you know how they play, know where they
 
 ## Screenshots
 
-*Screenshots* |
+*Screenshots* | *Description*
 ---|---
 [![Home](http://i.imgur.com/DVtoSMrt.png)](http://i.imgur.com/DVtoSMr.png) | Home screen
 [![Lobby](http://i.imgur.com/ftgrPydt.png)](http://i.imgur.com/ftgrPyd.png) | Lobby - Players see an URL they can share with the other people to join. Also fully cross-region play compatible.
