@@ -20,6 +20,7 @@
 </template>
 
 <script>
+	import filter from 'lodash/filter'
 	import kebabCase from 'lodash/kebabCase'
 
 	import roomMixin from '../mixins/room'
@@ -36,7 +37,9 @@
 		computed: {
 			currentRound() {
 				if (this.currentRoundId) {
-					return [this.rounds[this.currentRoundId]]
+					return filter(this.rounds, round => {
+						return round.id == this.currentRoundId
+					})
 				}
 				return []
 			}

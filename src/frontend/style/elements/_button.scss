@@ -29,7 +29,7 @@ $button-primary-color: material-color('blue-grey', '500');
 	&--primary {
 		background-color: material-color('orange', '400');
 		color: material-color('orange', '50');
-		&:hover {
+		&:hover:not(:disabled) {
 			background-color: material-color('orange', '500');			
 		}
 	}
@@ -44,7 +44,7 @@ $button-primary-color: material-color('blue-grey', '500');
 		margin: 0.5rem 0;
 		width: 100%;
 		
-		&:hover {
+		&:hover:not(:disabled) {
 			background-color: material-color('orange', '500');			
 		}
 	}

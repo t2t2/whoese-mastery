@@ -124,3 +124,22 @@
 		width: 100%;
 	}
 }
+
+.room-ended {
+	justify-content: space-around;
+	align-items: center;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	
+	&__content {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		font-size: 1.3em;
+		justify-content: center;
+		width: 100%;
+	}
+
+}

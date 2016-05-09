@@ -18,12 +18,6 @@
 				:settings="settings"
 				:user-player="userPlayer">
 			</component>
-			<button @click="debug = !debug">Debug ({{ room.state }})</button>
-			<div v-if="debug">
-				<pre v-text="room | json"></pre>
-				<pre v-text="players | json"></pre>
-				<pre v-text="userPlayer | json"></pre>
-			</div>
 		</div>
 	</div>
 </template>
@@ -79,16 +73,6 @@
 					return this.players[this.connection.user.player_id] || null
 				}
 				return null
-			}
-		},
-		data() {
-			return {
-				debug: false
-			}
-		},
-		methods: {
-			toggleDebug() {
-				this.debug = !this.debug
 			}
 		},
 		mixins: [pageMixin],

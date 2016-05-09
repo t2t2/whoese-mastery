@@ -5,7 +5,9 @@
 	max-width: 60rem;
 	width: 100%;
 	
-	font-size: 1.5rem;
+	@include tablet {
+		font-size: 1.5rem;
+	}
 	
 	&__title {
 		text-align: center;
@@ -27,12 +29,47 @@
 		}
 		
 		&--active {
-			background-color: material-color('orange', '800');
+			background-color: material-color('orange', '700');
+		}
+		
+		&--locked {
+			background-color: material-color('orange', '900');
 		}
 	}
 	
 	&__radio {
 		width: 1.5em;
 		height: 1.5em;
+	}
+}
+
+.round-result {
+	.subtitle {
+		text-align: center;
+		margin-bottom: 1em;
+		margin-top: 1em;
+	}
+	&__answers-list {
+		margin-bottom: 1rem;
+	}
+	&__answer {
+		&-wrap {
+			display: flex;
+			margin-bottom: 0.5rem;
+		}
+		&-arrow {
+			flex: 0 0 3rem;
+			text-align: center;
+		}
+		&er, & { // Am raping selectors
+			flex: 1 1 1rem;
+		}
+		&er {
+			text-align: right;
+		}
+	}
+	&__correct-answer {
+		font-size: 1.5em;
+		text-align: center;
 	}
 }

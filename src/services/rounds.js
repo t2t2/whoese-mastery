@@ -3,8 +3,6 @@ import service from 'feathers-knex'
 import knex from '../database'
 import {disable, jsonParseFields, jsonStringifyFields, updateTimestamps} from '../hooks'
 
-
-
 export default function () {
 	const app = this
 

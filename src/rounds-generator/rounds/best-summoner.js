@@ -62,6 +62,7 @@ export default class BestSummonerGenerator {
 				}
 			})
 			.orderBy('fun', 'asc')
+			.value()
 	}
 
 	getRound() {
@@ -69,7 +70,7 @@ export default class BestSummonerGenerator {
 
 		const round = {
 			type: 'bestSummoner',
-			phase: 'question',
+			phase: 'not-started',
 			round_info: { // eslint-disable-line camelcase
 				championId: from.championId
 			},

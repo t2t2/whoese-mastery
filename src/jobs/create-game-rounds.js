@@ -28,17 +28,31 @@ export default {
 			return somethingsWrong('Failed too many times')
 		}
 
-		const [room, players] = await Promise.all([
+		const [room, players, preRounds] = await Promise.all([
 			app.service('api/rooms').get(roomID),
 			app.service('api/players').find({
 				query: {
 					room_id: roomID // eslint-disable-line camelcase
 				}
-			})
+			}),
+			app.service('api/rounds').find({
+				query: {
+					room_id: roomID // eslint-disable-line camelcase
+				}
+			}),
 		])
 
 		if (players.length < 2) {
 			return somethingsWrong('Too few players?')
+		}
+
+		if (preRounds.length) {
+			// already exists for some reason
+			await app.service('api/rounds').remove(null, {
+				query: {
+					room_id: roomID
+				}
+			})
 		}
 
 		const steps = 2 + players.length // preprocess, n players, postprocess

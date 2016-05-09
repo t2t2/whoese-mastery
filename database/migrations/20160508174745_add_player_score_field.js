@@ -1,4 +1,3 @@
-
 export async function up(knex) {
 	await knex.schema.table('players', table => {
 		table.integer('score')

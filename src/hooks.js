@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import auth from 'feathers-authentication'
 import Bluebird from 'bluebird'
 
@@ -10,6 +11,16 @@ disable, remove, removeQuery, pluck, pluckQuery
 } from 'feathers-hooks'
 
 import errors from 'feathers-errors'
+
+export function associateCurrentPlayer({
+	idField = 'player_id',
+	as = 'player_id'
+} = {}) {
+	return auth.hooks.associateCurrentUser({
+		idField,
+		as
+	})
+}
 
 // Mapping over data or result
 export function map(callback) {
@@ -194,15 +205,35 @@ export function userMustBeRoomOwner(roomIDGetter) {
 	}
 }
 
-export function validate(schema) {
+export function userMustBeRoomPlayer(roomIDGetter) {
+	return async function (hook) {
+		if (!hook.params.provider) {
+			return
+		}
+
+		const playerID = hook.params.user.player_id
+
+		const [player, targetRoomID] = await Promise.all([
+			hook.app.service('api/players').get(playerID),
+			roomIDGetter(hook)
+		])
+
+		if (player.room_id !== targetRoomID) {
+			throw new errors.Forbidden('You are not playing in this room')
+		}
+	}
+}
+
+export function validate(schema, options = {}) {
 	return async function (hook) {
 		try {
-			hook.data = await schema.validate(hook.data, {
+			const instanceOptions = _.defaultsDeep({}, options, {
 				context: {
-					method: hook.method,
-					id: hook.id
+					hook
 				}
 			})
+			hook.data = await schema.validate(hook.data, instanceOptions)
+			return hook
 		} catch (error) {
 			if (error.name === 'ValidationError') {
 				throw new errors.BadRequest('Validation error', {

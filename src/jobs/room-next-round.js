@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 import makeDebug from 'debug'
 
 const debug = makeDebug('app:job')
@@ -52,6 +54,10 @@ export default {
 		await app.service('api/rooms').patch(room.id, {
 			current_round_id: nextRound.id // eslint-disable-line camelcase
 		})
-		// TODO: Fire off _.camelCase('start' + nextRound.type)
+		
+		app.queue.push(_.camelCase('start ' + nextRound.type), {
+			roundID: nextRound.id,
+			roomID: room.id
+		})
 	}
 }
