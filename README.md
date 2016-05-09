@@ -10,6 +10,14 @@ The more you play with friends, the more you know how they play, know where they
 
 ## Screenshots
 
+*Screenshots* |
+---|---
+[![Home](http://i.imgur.com/DVtoSMrt.png)](http://i.imgur.com/DVtoSMr.png) | Home screen
+[![Lobby](http://i.imgur.com/ftgrPydt.png)](http://i.imgur.com/ftgrPyd.png) | Lobby - Players see an URL they can share with the other people to join. Also fully cross-region play compatible.
+[![Question Example](http://i.imgur.com/PMd6LpXt.png)](http://i.imgur.com/PMd6LpX.png) | Question Example
+[![Answer Example](http://i.imgur.com/LbRkAdEt.png)](http://i.imgur.com/LbRkAdE.png) | Answer Example
+[![Results](http://i.imgur.com/DNwnvHvt.png)](http://i.imgur.com/DNwnvHv.png) | Results
+
 ## Requirements
 
 * Node >=5 (6 untested, but probably will work), on windows hosts make sure [you've got the setup for native module compilation](https://github.com/Microsoft/nodejs-guidelines/blob/master/windows-environment.md#compiling-native-addon-modules)
