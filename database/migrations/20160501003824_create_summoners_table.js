@@ -21,10 +21,12 @@ export async function up(knex) {
 
 export async function down(knex) {
 	await knex.schema.table('sessions', table => {
+		table.dropForeign('summoner_id')
 		table.dropColumn('summoner_id')
 	})
 
 	await knex.schema.table('players', table => {
+		table.dropForeign('summoner_id')
 		table.dropColumn('summoner_id')
 	})
 
