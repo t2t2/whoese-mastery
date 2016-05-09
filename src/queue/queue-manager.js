@@ -24,7 +24,7 @@ export default class QueueManager {
 
 		this.jobs = {}
 		this.working = 0
-		this.maxWorking = 1 // Can be increased once confident
+		this.maxWorking = 50 // Can be increased once confident
 		this.passiveListenerFrequency = moment.duration(1, 'minute')
 		this.passiveListenerInterval = null
 
