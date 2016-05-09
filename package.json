@@ -17,7 +17,7 @@
     "migrate": "knex migrate:latest",
     "migrate:make": "knex migrate:make",
     "migrate:rollback": "knex migrate:rollback",
-    "start": "cross-env NODE_ENV=development node ./build/start.js"
+    "start": "cross-env NODE_ENV=production node ./build/start.js"
   },
   "dependencies": {
     "axios": "^0.11.0",
