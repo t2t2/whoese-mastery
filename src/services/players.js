@@ -17,7 +17,7 @@ function checkIfNextRoomOwnerIsNeeded() {
 		const app = hook.app
 		const room = await app.service('api/rooms').get(player.room_id)
 
-		if (room.owner_player_id !== player.id) {
+		if (room.owner_player_id !== player.id && !room.owner_player_id) {
 			return
 		}
 
