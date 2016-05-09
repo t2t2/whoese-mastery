@@ -59,5 +59,6 @@ export default {
 			roundID: nextRound.id,
 			roomID: room.id
 		})
-	}
+	},
+	retry: moment.duration(3, 'seconds')
 }
