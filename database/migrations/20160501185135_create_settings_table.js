@@ -1,6 +1,6 @@
 export async function up(knex) {
 	await knex.schema.createTable('settings', table => {
-		table.string('key').primary()
+		table.string('key', 200).primary()
 		table.json('value')
 	})
 }
