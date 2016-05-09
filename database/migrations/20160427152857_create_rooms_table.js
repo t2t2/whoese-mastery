@@ -1,7 +1,7 @@
 export async function up(knex) {
 	await knex.schema.createTable('rooms', table => {
 		table.increments('id')
-		table.string('join_code').unique()
+		table.string('join_code', 32).unique()
 		table.timestamps()
 	})
 }

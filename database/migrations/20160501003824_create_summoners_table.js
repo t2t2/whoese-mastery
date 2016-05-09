@@ -2,7 +2,7 @@ export async function up(knex) {
 	await knex.schema.createTable('summoners', table => {
 		table.increments('id')
 		table.bigInteger('riot_id')
-		table.text('region')
+		table.string('region', 16)
 		table.string('name')
 		table.integer('icon_id')
 		table.timestamps()
@@ -11,11 +11,11 @@ export async function up(knex) {
 	})
 
 	await knex.schema.table('players', table => {
-		table.integer('summoner_id').references('id').inTable('players').onUpdate('CASCADE').onDelete('CASCADE')
+		table.integer('summoner_id').unsigned().references('id').inTable('players').onUpdate('CASCADE').onDelete('CASCADE')
 	})
 
 	await knex.schema.table('sessions', table => {
-		table.integer('summoner_id').references('id').inTable('players').onUpdate('CASCADE').onDelete('CASCADE')
+		table.integer('summoner_id').unsigned().references('id').inTable('players').onUpdate('CASCADE').onDelete('CASCADE')
 	})
 }
 

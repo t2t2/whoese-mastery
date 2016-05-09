@@ -5,11 +5,11 @@ export async function up(knex) {
 	})
 
 	await knex.schema.table('rooms', table => {
-		table.integer('owner_player_id').references('id').inTable('players').onUpdate('CASCADE').onDelete('SET NULL')
+		table.integer('owner_player_id').unsigned().references('id').inTable('players').onUpdate('CASCADE').onDelete('SET NULL')
 	})
 
 	await knex.schema.table('sessions', table => {
-		table.integer('player_id').references('id').inTable('players').onUpdate('CASCADE').onDelete('SET NULL')
+		table.integer('player_id').unsigned().references('id').inTable('players').onUpdate('CASCADE').onDelete('SET NULL')
 	})
 }
 

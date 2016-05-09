@@ -1,7 +1,7 @@
 export async function up(knex) {
 	await knex.schema.createTable('rounds', table => {
 		table.increments('id')
-		table.integer('room_id').references('id').inTable('rooms').onUpdate('CASCADE').onDelete('CASCADE')
+		table.integer('room_id').unsigned().references('id').inTable('rooms').onUpdate('CASCADE').onDelete('CASCADE')
 		table.string('type')
 		table.string('phase')
 		table.json('round_info')
@@ -11,7 +11,7 @@ export async function up(knex) {
 	})
 
 	await knex.schema.table('rooms', table => {
-		table.integer('current_round_id').nullable().references('id').inTable('rooms').onUpdate('CASCADE').onDelete('SET NULL')
+		table.integer('current_round_id').unsigned().nullable().references('id').inTable('rooms').onUpdate('CASCADE').onDelete('SET NULL')
 	})
 }
 

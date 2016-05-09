@@ -1,6 +1,6 @@
 export async function up(knex) {
 	await knex.schema.table('players', table => {
-		table.integer('room_id').references('id').inTable('rooms').onUpdate('CASCADE').onDelete('CASCADE')
+		table.integer('room_id').unsigned().references('id').inTable('rooms').onUpdate('CASCADE').onDelete('CASCADE')
 	})
 }
 
