@@ -32,12 +32,16 @@ The more you play with friends, the more you know how they play, know where they
 
 * `npm run dev`
 
+Open http://localhost:8080 (is a proxy to the server which will run on :8000)
+
 ### Production mode
 
 *Featuring optimisations and versioning*
 
 * Build the files with `npm run build`
 * Run the server with `npm run start` or by calling `node build/start.js`
+
+Runs on port specified in the port option of config
 
 ## Talk Nerdy To Me
 
