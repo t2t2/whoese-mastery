@@ -20,7 +20,7 @@ The more you play with friends, the more you know how they play, know where they
 
 ## Requirements
 
-* Node >=5 (6 untested, but probably will work), on windows hosts make sure [you've got the setup for native module compilation](https://github.com/Microsoft/nodejs-guidelines/blob/master/windows-environment.md#compiling-native-addon-modules)
+* Node >=5, on windows hosts make sure [you've got the setup for native module compilation](https://github.com/Microsoft/nodejs-guidelines/blob/master/windows-environment.md#compiling-native-addon-modules)
 * Optional but reccomended: 
     * A database server. By default a sqlite database is created in `database/database.sqlite`  
       See suported databases from [knex documentation](http://knexjs.org/#Installation-node)
