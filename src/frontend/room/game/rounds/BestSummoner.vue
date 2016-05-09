@@ -1,7 +1,7 @@
 <template>
 	<div class="round">
 		<h4 class="round__title title is-2">
-			Which of you is the best on
+			Amongst yourself, who has the best mastery on
 			<champion
 				class="champion--inline"
 				:settings="settings"

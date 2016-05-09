@@ -25,7 +25,7 @@
 				</div>
 			</li>
 		</ul>
-		<h5 class="subtitle is-4">But the correct answer is...</h5>
+		<h5 class="subtitle is-4">And the correct answer is...</h5>
 		<div class="round-result__correct-answer">
 			<summoner
 				v-if="players[round.answer_info.correct]"
