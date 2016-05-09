@@ -29,7 +29,7 @@ export default {
 			}
 
 			if (!databaseChampions[champion.id]) {
-				return app.service('api/champions').create(shouldChampion)
+				return app.service('api/champions').create(shouldChampion).catch(() => {}) // Might have errors because id is already given
 			} else if (!_.isEqual(shouldChampion, databaseChampions[champion.id])) {
 				return app.service('api/champions').update(champion.id, shouldChampion)
 			}

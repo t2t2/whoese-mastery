@@ -10,4 +10,9 @@ if (config.has('database.url') && config.get('database.url')) {
 	_.assign(connectionOptions, parseConnectionString(config.get('database.url')))
 }
 
+if (_.isEqual(connectionOptions, {})) {
+	console.error("Looks like you haven't configured a database. Make sure to do it in local.json for your production settings")
+	process.exit(1)
+}
+
 export default knex(connectionOptions)
