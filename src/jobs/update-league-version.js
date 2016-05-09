@@ -8,7 +8,7 @@ import league from '../league/api'
 const debug = makeDebug('app:job')
 
 export default {
-	repeating: moment.duration(1, 'days'),
+	repeating: moment.duration(1, 'day'),
 	async handle() {
 		const app = this
 
@@ -25,8 +25,8 @@ export default {
 			await app.service('api/settings').patch('league_versions', {
 				value: shouldBe
 			})
+			
+			await app.queue.push('updateChampions')
 		}
-
-		await app.queue.push('updateChampions')
 	}
 }

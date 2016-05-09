@@ -73,6 +73,9 @@ Runs on port specified in the port option of config
 Due to time limits (and the workload that just the real-time infrastructure needed), there are quite a bit of unpolished corners.
 
 * Loss of session over refreshes
-* No clearing of session once done / logging out of user
+* No logging out of user
 * Not a lot of variety in the types of questions
-* Lack of filtering what events to send out to what sockets.
+* Lack of filtering what events to send out to what sockets. (feathers)
+* No display of answer timers
+  * No early skipping of answer timers (when everyone has chosen an answer)
+* Limits on the internal API

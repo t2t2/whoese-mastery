@@ -397,7 +397,7 @@ export default class QueueManager {
 		return this.service.create({
 			queue: data.queue || this.queues[0],
 			name: data.name,
-			payload: JSON.stringify(data.payload),
+			payload: JSON.stringify(data.payload || {}),
 			attempts: 0,
 			reserved: false,
 			/* eslint-disable camelcase */

@@ -47,6 +47,9 @@ export default {
 			await app.service('api/rooms').patch(roomID, {
 				state: 'finished'
 			})
+			await app.queue.push('onRoomEnd', {
+				roomID,
+			})
 			return
 		}
 

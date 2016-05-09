@@ -2,6 +2,7 @@ import QueueManager from './queue/queue-manager'
 
 import answerBestSummoner from './jobs/answer-best-summoner'
 import createGameRounds from './jobs/create-game-rounds'
+import onRoomEnd from './jobs/on-room-end'
 import roomNextRound from './jobs/room-next-round'
 import startBestSummoner from './jobs/start-best-summoner'
 import updateChampions from './jobs/update-champions'
@@ -18,6 +19,7 @@ export default function () {
 	app.queue.registerJobs({
 		answerBestSummoner,
 		createGameRounds,
+		onRoomEnd,
 		roomNextRound,
 		startBestSummoner,
 		updateChampions,

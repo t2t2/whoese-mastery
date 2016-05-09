@@ -14,6 +14,10 @@ function isAboutSelf(data, connection) {
 
 function removePlayerIfPossible() {
 	async function checkPlayerForRemoval(hook, session) {
+		if (!session.player_id) {
+			return
+		}
+
 		const player = await hook.app.service('api/players').get(session.player_id)
 		const room = await hook.app.service('api/rooms').get(player.room_id)
 
