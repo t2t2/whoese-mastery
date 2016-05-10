@@ -43,6 +43,7 @@ export default function () {
 	const sessionsService = app.service('api/sessions')
 
 	sessionsService.before({
+		find: [disable('external')],
 		create: [disable('external'), updateTimestamps()],
 		update: [disable('external'), updateTimestamps()],
 		patch: [disable('external'), updateTimestamps()],

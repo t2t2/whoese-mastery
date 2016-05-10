@@ -142,6 +142,9 @@ export default function () {
 	const roomsService = app.service('api/rooms')
 
 	roomsService.before({
+		find: [
+			disable('external')
+		],
 		create: [
 			verifyToken(),
 			populateUser(),

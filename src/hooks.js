@@ -140,6 +140,20 @@ export function populate(target, options) {
 	}
 }
 
+export function queryMustInclude(...fields) {
+	return function (hook) {
+		if (!hook.params.provider) {
+			return
+		}
+
+		fields.forEach(field => {
+			if (!hook.params.query || !(field in hook.params.query)) {
+				throw new errors.Forbidden('Query is too wide')
+			}
+		})
+	}
+}
+
 // Mostly taken from feathers-hooks, changed to run checking per thing
 export function removeIndividually(...fields) {
 	const callback = typeof fields[fields.length - 1] === 'function' ? fields.pop() : (hook) => Boolean(hook.params.provider)

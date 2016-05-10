@@ -7,7 +7,7 @@
 				<summoner v-for="winner in winners" :settings="settings" :summoner="winner.summoner"></summoner>
 			</div>
 			
-			<h4 class="room-ended__taunty subtitle is-4">Feel free to taunt them as much as you want over this</h4>
+			<h4 class="room-ended__taunty subtitle is-4">Feel free to taunt the losers as much as you want over this</h4>
 			
 			<player-scores
 				:players="players"

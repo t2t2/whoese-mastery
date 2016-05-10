@@ -2,7 +2,7 @@ import errors from 'feathers-errors'
 import service from 'feathers-knex'
 
 import knex from '../database'
-import {disable, map, mapSeries, pluck, populate, populateUser, restrictToAuthenticated, verifyToken, updateTimestamps} from '../hooks'
+import {disable, map, mapSeries, pluck, populate, populateUser, queryMustInclude, restrictToAuthenticated, verifyToken, updateTimestamps} from '../hooks'
 
 function assignPlayerToSession() {
 	return async (hook) => {
@@ -157,6 +157,9 @@ export default function () {
 	const playersService = app.service('api/players')
 
 	playersService.before({
+		find: [
+			queryMustInclude('room_id')
+		],
 		create: [
 			verifyToken(),
 			populateUser(),

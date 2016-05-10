@@ -14,6 +14,7 @@ export default function () {
 	const summonersService = app.service('api/summoners')
 
 	summonersService.before({
+		find: [disable('external')],
 		create: [disable('external'), updateTimestamps()],
 		update: [disable('external'), updateTimestamps()],
 		patch: [disable('external'), updateTimestamps()],

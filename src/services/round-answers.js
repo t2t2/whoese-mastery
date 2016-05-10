@@ -2,7 +2,7 @@ import errors from 'feathers-errors'
 import service from 'feathers-knex'
 
 import knex from '../database'
-import {associateCurrentPlayer, disable, jsonParseFields, jsonStringifyFields, pluck, populateUser, restrictToAuthenticated, updateTimestamps, userMustBeRoomPlayer, verifyToken} from '../hooks'
+import {associateCurrentPlayer, disable, jsonParseFields, jsonStringifyFields, pluck, populateUser, queryMustInclude, restrictToAuthenticated, updateTimestamps, userMustBeRoomPlayer, verifyToken} from '../hooks'
 
 import bestSummonerValidator from './answer-validations/best-summoner'
 
@@ -58,6 +58,9 @@ export default function () {
 	const roundAnswersService = app.service('api/round-answers')
 
 	roundAnswersService.before({
+		find: [
+			queryMustInclude('round_id')
+		],
 		create: [
 			verifyToken(),
 			populateUser(),
