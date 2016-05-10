@@ -61,7 +61,7 @@ Runs on port specified in the port option of config
 * Platform - `node.js`  
   As much as the package ecosystem is a mess of [pick me pick me pick me up](https://youtu.be/M3rg-rh6MPo "I would like to apologise for linking to.. that"), it is still the best way at the moment for real-time based web servers.
 * "Framework" - [`feathers.js`](http://feathersjs.com/)  
-  Well... It's more of a cluster of packages, but as far as I have searched it is definitely the faster way to make a real-time thing. Mainly because sails is practically dead. That only leaves making the whole thing yourself which too slow.  
+  Well... It's more of a cluster of packages, but as far as I have searched it is definitely the faster way to make a real-time thing. Mainly because sails is practically dead. That only leaves making the whole thing yourself which too slow, especially if you want to have a sane structure (eg. RESTful like feathers does).  
   Must be noted, even though it's good for real-time, it's not realy optimal for user registration-less games and there's quite a lot of rough edges. But those problems can be overwritten by doing it yourself. Also there's the downside of no good economy spinning around it, so there's quite a few things I had to build first, but now I can re-use those ~~for evil~~.  
   * Job queue / Task Scheduler - Custom  
     All the generic packages are too specialised to a database, and there isn't one that natively integrates with feathers. So I read up on laravel source, and did a mini-port of it for feathers, taking advantage of the possibility to watch for update events, practically guaranteeing on-time calling.
@@ -84,8 +84,9 @@ Due to time limits (and the workload that just the real-time infrastructure need
 
 * Loss of session over refreshes
 * No logging out of user
-* Not a lot of variety in the types of questions
+* Not a lot of variety in the types of questions. [Some of the ideas I've written down](https://github.com/t2t2/whose-mastery/wiki/Rounds)
 * Lack of filtering what events to send out to what sockets. (feathers)
 * No display of answer timers
   * No early skipping of answer timers (when everyone has chosen an answer)
-* Limits on the internal API
+* Limiting on the internal API (feathers generates an api for every thing)
+* Cleanup of super old data
